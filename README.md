@@ -30,3 +30,22 @@ Also - during cold weather - it's possible for a zone to need more heat than sup
 ## Hardware
 ### Raspberry pi
 This system is built using a raspberry pi 5 with 8G of memory. Probably this will be replaced with a smaller version when the system is working. For the time being it makes for easier development if we aren't memory constrained.
+
+### Analog sensor board
+This is the widgetloards (https://widgetlords.com/) Pi-SPi-8AI+ Raspberry Pi Analog Input I/O Module configured for thermistor input (about $26). Attached to that will be a number of standard 10K thermistors.
+This board can take up to 8 inputs. Expected inputs are:
+ * Main boiler output
+ * Main boiler input
+ * Zone 1 output
+ * Zone 2 output
+
+Additionally sensors may be added to zone subsections if needed to identify issues. Currently we have 9 of these so they won't all fit on one board.
+
+### Digital sensor board
+This is the widgetloards (https://widgetlords.com/) Pi-SPi-8DI Raspberry Pi Digital Input I/O Module (about $26). this can take the standard 24v ac as input. There will be 2-3 of these.
+Expected inputs are:
+ * Zone 1 circulator
+ * Zone 2 circulator
+ * 9 thermostat inputs.
+
+
