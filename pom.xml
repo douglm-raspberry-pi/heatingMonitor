@@ -1,0 +1,97 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.douglm</groupId>
+    <artifactId>r-pi-parent</artifactId>
+    <version>1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>heating-monitor</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <name>Raspberry pi based heating monitor</name>
+  <description>Raspberry pi based heating monitor</description>
+  <url>https://github.com/douglm-raspberry-pi/heatingMonitor</url>
+
+  <properties>
+    <r-pi.releases.repo.id>central</r-pi.releases.repo.id>
+    <r-pi.releases.repo.url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</r-pi.releases.repo.url>
+    <r-pi.snapshots.repo.id>central</r-pi.snapshots.repo.id>
+    <r-pi.snapshots.repo.url>https://central.sonatype.com/repository/maven-snapshots/</r-pi.snapshots.repo.url>
+  </properties>
+
+  <scm>
+    <connection>scm:git:git@github.com:douglm-raspberry-pi/heatingMonitor.git</connection>
+    <developerConnection>scm:git:git@github.com:douglm-raspberry-pi/heatingMonitor.git</developerConnection>
+    <url>https://github.com/douglm-raspberry-pi/heatingMonitor</url>
+  </scm>
+
+  <repositories>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+        <updatePolicy>never</updatePolicy>
+      </snapshots>
+      <id>${r-pi.snapshots.repo.id}</id>
+      <name>r-pi Snapshots Repository</name>
+      <url>${r-pi.snapshots.repo.url}</url>
+      <layout>default</layout>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.pi4j</groupId>
+      <artifactId>pi4j-core</artifactId>
+    </dependency>
+
+    <!-- include Pi4J Plugins (Platforms and I/O Providers) -->
+    <dependency>
+      <groupId>com.pi4j</groupId>
+      <artifactId>pi4j-plugin-raspberrypi</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.pi4j</groupId>
+      <artifactId>pi4j-plugin-linuxfs</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+
+        <configuration>
+          <assembleDirectory>${project.build.directory}/hmon</assembleDirectory>
+          <programs>
+            <program>
+              <mainClass>org.douglm.heatingMonitor.TryStuff</mainClass>
+              <id>hmon</id>
+            </program>
+          </programs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+    </plugins>
+  </build>
+</project>
