@@ -6,17 +6,21 @@ package org.douglm.heatingMonitor;
 import org.bedework.util.logging.BwLogger;
 import org.bedework.util.logging.Logged;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.pi4j.Pi4J;
 import com.pi4j.context.Context;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.ProviderException;
-
-import static org.douglm.heatingMonitor.PiSpi8a1Plus.Mode.thermistor;
 
 /**
  * User: mike Date: 3/13/25 Time: 14:30
  */
 public class Monitor implements Logged {
+  final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+
   public static void main(final String[] args) {
     final var m = new Monitor();
 
@@ -24,16 +28,32 @@ public class Monitor implements Logged {
   }
 
   private final Context pi4j;
+  private final MonitorConfig config;
 
   public Monitor() throws ProviderException {
+    final var classLoader = Thread.currentThread().getContextClassLoader();
+    final var file = new File(classLoader.getResource("monitor.yaml").getFile());
+    try {
+      config = mapper.readValue(file, MonitorConfig.class);
+    } catch (final IOException ioe) {
+      error(ioe);
+      throw new RuntimeException(ioe);
+    }
+    info(config.toString());
     pi4j = Pi4J.newAutoContext();
   }
 
   public void monitorTemp() {
-    try (final var aToD = new PiSpi8a1Plus(pi4j, 0, thermistor, 7)) {
+    final var analogBoard = config.getAnalogBoard();
+    try (final var aToD = new PiSpi8aIPlus(pi4j,
+                                           analogBoard.getSpiAddress())) {
       while (true) {
-        final var val = aToD.getTemperature();
-        System.out.println(val);
+        for (final var analogChannel: analogBoard.getChannels()) {
+          if (analogChannel.getMode() == AnalogChannelConfig.Mode.thermistor) {
+            final var val = aToD.getTemperature(analogChannel.getChannel());
+            System.out.println(analogChannel.getName() + ": " + val);
+          }
+        }
         try {
           Thread.sleep(500);
         } catch (final InterruptedException ignored) {

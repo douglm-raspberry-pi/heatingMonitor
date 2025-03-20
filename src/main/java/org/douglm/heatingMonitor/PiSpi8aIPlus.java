@@ -3,15 +3,11 @@
 */
 package org.douglm.heatingMonitor;
 
-import org.bedework.util.logging.BwLogger;
-
 import com.pi4j.context.Context;
 
 import java.security.ProviderException;
 
-import static java.lang.String.format;
-
-/** Support Widgetlords PI-SPI-8A1+ analog to digital converter.
+/** Support Widgetlords PI-SPI-8AI+ analog to digital converter.
  * <p>
  *   This may be configured in 4 modes. Only support thermistor mode
  *   for the moment.
@@ -21,39 +17,14 @@ import static java.lang.String.format;
  *
  * User: mike Date: 3/17/25 Time: 17:38
  */
-public class PiSpi8a1Plus extends SpiDevice {
-  public enum Mode {
-    thermistor,
-    milliAmp,
-    dc5,
-    dc10
-  }
-
-  private final Context context;
-  private final Mode mode;
-  private final int channel;
-
-  public PiSpi8a1Plus(final Context context,
-                      final int address,
-                      final Mode mode,
-                      final int channel) {
+public class PiSpi8aIPlus extends SpiDevice {
+  public PiSpi8aIPlus(final Context context,
+                      final int address) {
     super(context, address);
-
-    if (mode != Mode.thermistor) {
-      throw new IllegalArgumentException("Mode must be thermistor");
-    }
-
-    this.context = context;
-    this.mode = mode;
-    this.channel = channel;
   }
 
-  public double getTemperature() {
-    if (mode != Mode.thermistor) {
-      throw new RuntimeException("Not configured as thermistor");
-    }
-
-    final var val = readByte();
+  public double getTemperature(final int channel) {
+    final var val = readByte(channel);
     System.out.println(val);
     System.out.println("SH: " + rToDegCWithSh(val));
     final var degCBeta = rToDegCWithBeta(val);
@@ -63,7 +34,7 @@ public class PiSpi8a1Plus extends SpiDevice {
     return degCBeta;
   }
 
-  private int readByte() throws ProviderException {
+  private int readByte(final int channel) throws ProviderException {
     final byte[] data = new byte[3];
     data[0] = (byte)(0x06 | (channel >> 2));
     data[1] = (byte)((channel << 6) & 0xC0);
@@ -138,28 +109,5 @@ public class PiSpi8a1Plus extends SpiDevice {
     final var r = (value * load) / (range - value);
     return 1 / (1 / (kelvinAt0C + 25.) +
                         (double)1L / beta * Math.log((double)r / rAt25)) - kelvinAt0C;
-  }
-
-  private void dumpBytes(final String s,final byte[] data) {
-    final var sb = new StringBuilder(s).append(":");
-    for (final byte b: data) {
-      sb.append(format("%02x ", b));
-    }
-    debug(sb.toString());
-  }
-
-  /* ==============================================================
-   *                   Logged methods
-   * ============================================================== */
-
-  private final BwLogger logger = new BwLogger();
-
-  @Override
-  public BwLogger getLogger() {
-    if ((logger.getLoggedClass() == null) && (logger.getLoggedName() == null)) {
-      logger.setLoggedClass(getClass());
-    }
-
-    return logger;
   }
 }

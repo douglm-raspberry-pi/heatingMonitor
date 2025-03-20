@@ -1,0 +1,29 @@
+analogBoard:
+    spiAddress: 1
+    channels:
+      - mode: "thermistor"
+        channel: 7
+        name: "Thermistor on 7"
+        beta: 3380
+
+digitalBoards:
+  - spiAddress: 3
+    chipAddress: 0
+    inputs:
+      - index: 0
+        name: "Digital input 0:0"
+        highTrue: true
+      - index: 1
+        name: "Digital input 0:1"
+        highTrue: false
+
+  - spiAddress: 3
+    chipAddress: 1
+    inputs:
+      - index: 0
+        name: "Digital input 1:0"
+        highTrue: true
+      - index: 1
+        name: "Digital input 1:1"
+        highTrue: false
+
