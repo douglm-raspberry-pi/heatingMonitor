@@ -45,7 +45,7 @@ public class Monitor implements Logged {
 
   public void monitorTemp() {
     final var analogBoard = config.getAnalogBoard();
-    try (final var aToD = new PiSpi8aIPlus(pi4j,
+    try (final var aToD = new PiSpi8aIPlus(analogBoard, pi4j,
                                            analogBoard.getSpiAddress())) {
       while (true) {
         for (final var analogChannel: analogBoard.getChannels()) {

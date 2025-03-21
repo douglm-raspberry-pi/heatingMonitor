@@ -5,6 +5,8 @@ analogBoard:
         channel: 7
         name: "Thermistor on 7"
         beta: 3380
+        inputReference: 10000
+        inputRange: 4096
 
 digitalBoards:
   - spiAddress: 3
