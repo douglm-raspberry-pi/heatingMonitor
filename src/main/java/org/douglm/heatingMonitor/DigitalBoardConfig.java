@@ -5,45 +5,26 @@ package org.douglm.heatingMonitor;
 
 import org.bedework.base.ToString;
 
-import java.util.List;
+import org.douglm.piSpi.PiSpi8DIConfig;
 
 /**
  * User: mike Date: 3/19/25 Time: 22:37
  */
-public class DigitalBoardConfig {
-  private int spiAddress;
-  private int chipAddress; // 0 to 3
-  private List<DigitalInputConfig> inputs;
+public class DigitalBoardConfig
+        extends PiSpi8DIConfig<DigitalInputConfig> {
+  private String circulator;
 
-  public int getSpiAddress() {
-    return spiAddress;
+  public String getCirculator() {
+    return circulator;
   }
 
-  public void setSpiAddress(final int val) {
-    spiAddress = val;
+  public void setCirculator(final String val) {
+    circulator = val;
   }
 
-  public int getChipAddress() {
-    return chipAddress;
+  public ToString toStringSegment(final ToString ts) {
+    return super.toStringSegment(ts)
+                .append("circulator", circulator);
   }
 
-  public void setChipAddress(final int val) {
-    chipAddress = val;
-  }
-
-  public List<DigitalInputConfig> getInputs() {
-    return inputs;
-  }
-
-  public void setInputs(
-          final List<DigitalInputConfig> val) {
-    inputs = val;
-  }
-
-  public String toString() {
-    return new ToString(this)
-            .append("spiAddress", spiAddress)
-            .append("inputs", inputs)
-            .toString();
-  }
 }

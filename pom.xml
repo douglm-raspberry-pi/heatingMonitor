@@ -46,6 +46,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.douglm</groupId>
+      <artifactId>piSpiSupport</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>org.bedework</groupId>
       <artifactId>bw-base</artifactId>
     </dependency>

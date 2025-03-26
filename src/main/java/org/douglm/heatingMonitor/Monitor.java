@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.pi4j.Pi4J;
 import com.pi4j.context.Context;
+import org.douglm.piSpi.PiSpi8AIPlus;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class Monitor implements Logged {
 
   public void monitorTemp() {
     final var analogBoard = config.getAnalogBoard();
-    try (final var aToD = new PiSpi8aIPlus(analogBoard, pi4j,
+    try (final var aToD = new PiSpi8AIPlus(analogBoard, pi4j,
                                            analogBoard.getSpiAddress())) {
       while (true) {
         for (final var analogChannel: analogBoard.getChannels()) {

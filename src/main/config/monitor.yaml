@@ -1,3 +1,9 @@
+circulators:
+  - name: "Apartment 1"
+    hasPriority: false
+  - name: "Apartment 2"
+    hasPriority: false
+
 analogBoard:
     spiAddress: 1
     channels:
@@ -18,6 +24,7 @@ digitalBoards:
       - index: 1
         name: "Digital input 0:1"
         highTrue: false
+        circulator: "Apartment 1"
 
   - spiAddress: 3
     chipAddress: 1
@@ -28,4 +35,4 @@ digitalBoards:
       - index: 1
         name: "Digital input 1:1"
         highTrue: false
-
+        circulator: "Apartment 2"

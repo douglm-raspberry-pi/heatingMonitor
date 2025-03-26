@@ -13,6 +13,7 @@ import java.util.List;
 public class MonitorConfig {
   private AnalogBoardConfig analogBoard;
   private List<DigitalBoardConfig> digitalBoards;
+  private List<CirculatorConfig> circulators;
 
   public AnalogBoardConfig getAnalogBoard() {
     return analogBoard;
@@ -32,10 +33,23 @@ public class MonitorConfig {
     digitalBoards = val;
   }
 
+  public List<CirculatorConfig> getCirculators() {
+    return circulators;
+  }
+
+  public void setCirculators(final List<CirculatorConfig> val) {
+    circulators = val;
+  }
+
+  public ToString toStringSegment(final ToString ts) {
+    ts.append("analogBoard", analogBoard)
+      .append("digitalBoards", digitalBoards)
+      .append("circulators", circulators);
+
+    return ts;
+  }
+
   public String toString() {
-    return new ToString(this)
-            .append("analogBoard", analogBoard)
-            .append("digitalBoards", digitalBoards)
-            .toString();
+    return toStringSegment(new ToString(this)).toString();
   }
 }
