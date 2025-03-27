@@ -11,16 +11,33 @@ import java.util.List;
  * User: mike Date: 3/19/25 Time: 22:24
  */
 public class MonitorConfig {
+  private long waitTime;
+  private boolean centigrade;
   private AnalogBoardConfig analogBoard;
   private List<DigitalBoardConfig> digitalBoards;
   private List<CirculatorConfig> circulators;
+
+  public long getWaitTime() {
+    return waitTime;
+  }
+
+  public void setWaitTime(final long val) {
+    waitTime = val;
+  }
+
+  public boolean isCentigrade() {
+    return centigrade;
+  }
+
+  public void setCentigrade(final boolean val) {
+    centigrade = val;
+  }
 
   public AnalogBoardConfig getAnalogBoard() {
     return analogBoard;
   }
 
-  public void setAnalogBoard(
-          final AnalogBoardConfig val) {
+  public void setAnalogBoard(final AnalogBoardConfig val) {
     analogBoard = val;
   }
 
@@ -42,7 +59,8 @@ public class MonitorConfig {
   }
 
   public ToString toStringSegment(final ToString ts) {
-    ts.append("analogBoard", analogBoard)
+    ts.append("waitTime", waitTime)
+      .append("analogBoard", analogBoard)
       .append("digitalBoards", digitalBoards)
       .append("circulators", circulators);
 

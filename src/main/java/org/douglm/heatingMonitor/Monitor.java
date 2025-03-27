@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.pi4j.Pi4J;
 import com.pi4j.context.Context;
+import org.douglm.piSpi.PiSpi8AIChannelConfig.Mode;
 import org.douglm.piSpi.PiSpi8AIPlus;
 
 import java.io.File;
@@ -41,6 +42,7 @@ public class Monitor implements Logged {
       throw new RuntimeException(ioe);
     }
     info(config.toString());
+    System.out.print(config.toString());
     pi4j = Pi4J.newAutoContext();
   }
 
@@ -50,13 +52,20 @@ public class Monitor implements Logged {
                                            analogBoard.getSpiAddress())) {
       while (true) {
         for (final var analogChannel: analogBoard.getChannels()) {
-          if (analogChannel.getMode() == AnalogChannelConfig.Mode.thermistor) {
+          if (analogChannel.getMode() == Mode.thermistor) {
             final var val = aToD.getTemperature(analogChannel.getChannel());
-            System.out.println(analogChannel.getName() + ": " + val);
+            final double f = (val * 9 / 5) + 32;
+            final double out;
+            if (config.isCentigrade()) {
+              out = val;
+            } else {
+              out = f;
+            }
+            System.out.println(analogChannel.getName() + ": " + out);
           }
         }
         try {
-          Thread.sleep(500);
+          Thread.sleep(config.getWaitTime());
         } catch (final InterruptedException ignored) {
           break;
         }

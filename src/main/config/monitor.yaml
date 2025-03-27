@@ -1,3 +1,5 @@
+waitTime: 1000  # Main read loop wait time
+centigrade: false
 circulators:
   - name: "Apartment 1"
     hasPriority: false
@@ -7,12 +9,35 @@ circulators:
 analogBoard:
     spiAddress: 1
     channels:
-      - mode: "thermistor"
-        channel: 7
-        name: "Thermistor on 7"
+      - mode: thermistor
+        channel: 0
+        name: Apartment 1 return
         beta: 3380
         inputReference: 10000
         inputRange: 4096
+        notes: |
+          Apartment 1 return uses a widgetlords thermistor
+          Orange pair
+      - mode: thermistor
+        channel: 1
+        name: Apartment 2 return
+        beta: 3950
+        inputReference: 10000
+        inputRange: 4096
+        notes: |
+          Apartment 2 return uses an adafruit thermistor
+          https://www.adafruit.com/product/372
+          Blue pair
+      - mode: thermistor
+        channel: 2
+        name: Boiler out
+        beta: 3950
+        inputReference: 10000
+        inputRange: 4096
+        notes: |
+          Boiler out uses an adafruit thermistor
+          https://www.adafruit.com/product/372
+          Green pair
 
 digitalBoards:
   - spiAddress: 3
