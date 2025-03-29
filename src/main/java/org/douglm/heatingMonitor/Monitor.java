@@ -49,7 +49,9 @@ public class Monitor implements Logged {
   public void monitorTemp() {
     final var analogBoard = config.getAnalogBoard();
     try (final var aToD = new PiSpi8AIPlus(analogBoard, pi4j,
-                                           analogBoard.getSpiAddress())) {
+                                           analogBoard.getSpiAddress());
+         final var digitalBoards = new DigitalBoards(pi4j,
+                                                     config.getDigitalBoards())) {
       while (true) {
         for (final var analogChannel: analogBoard.getChannels()) {
           if (analogChannel.getMode() == Mode.thermistor) {
@@ -64,6 +66,15 @@ public class Monitor implements Logged {
             System.out.println(analogChannel.getName() + ": " + out);
           }
         }
+
+        for (final var digitalBoard: digitalBoards.getDigitalBoards()) {
+          final var db = digitalBoard.digitalBoard();
+          for (final var input: digitalBoard.digitalBoardConfig().getInputs()) {
+            System.out.println(input.getName() + ": " +
+                                       db.state(input.getIndex()));
+          }
+        }
+
         try {
           Thread.sleep(config.getWaitTime());
         } catch (final InterruptedException ignored) {

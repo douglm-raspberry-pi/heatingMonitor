@@ -44,20 +44,18 @@ digitalBoards:
     chipAddress: 0
     inputs:
       - index: 0
-        name: "Digital input 0:0"
+        name: "Apt #1 Bed/Bath"
         highTrue: true
-      - index: 1
-        name: "Digital input 0:1"
-        highTrue: false
         circulator: "Apartment 1"
-
-  - spiAddress: 3
-    chipAddress: 1
-    inputs:
-      - index: 0
-        name: "Digital input 1:0"
-        highTrue: true
       - index: 1
-        name: "Digital input 1:1"
-        highTrue: false
-        circulator: "Apartment 2"
+        name: "Apt #1 Back"
+        highTrue: true
+        circulator: "Apartment 1"
+      - index: 2
+        name: "Apt #1 Front"
+        highTrue: true
+        circulator: "Apartment 1"
+      - index: 3
+        name: "Apt #1 Kitchen"
+        highTrue: true
+        circulator: "Apartment 1"
