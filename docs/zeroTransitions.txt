@@ -1,0 +1,146 @@
+Having noted apparently random false results on a PiSpi8DI board I did
+some investigating and came up wit the following.
+
+Below is output recording the transitions from high to low for a
+digital input wired to a constant 24V AC input.
+
+The chip does not register every zero transition, but those it does are
+a multiple of 8 1/3 milliseconds apart - i.e 120 transitions per second.
+
+Produced this by reading the device every millisecond and writing
+out transitions from high to low (as the chip was configured).
+
+Reading more frequently might have filled in the gaps but java doesn't
+make a sub-millisecond wait easy.
+
+I'd suggest - at the least - the documentation needs to make this
+behavior clear to buyers.
+
+Alternatively - referring to the schematic - removing Dx and using
+LDx as a rectifier as well as indicator and adding a capacitor would
+probably make it work as expected.
+
+My main issue is tha your site says this:
+
+        The Pi-SPi-8DI has 8 inputs that can either DC or AC (Max 24 V) and are optically isolated.
+
+It's true I guess but the results aren't the same.
+
+22:10:40,806 INFO  [Monitor] ---------- 58
+22:10:40,834 INFO  [Monitor] ---------- 33
+22:10:40,860 INFO  [Monitor] ---------- 26
+22:10:40,868 INFO  [Monitor] ---------- 8
+22:10:40,901 INFO  [Monitor] ---------- 33
+22:10:40,968 INFO  [Monitor] ---------- 67
+22:10:40,976 INFO  [Monitor] ---------- 8
+22:10:41,001 INFO  [Monitor] ---------- 25
+22:10:41,010 INFO  [Monitor] ---------- 8
+22:10:41,018 INFO  [Monitor] ---------- 9
+22:10:41,068 INFO  [Monitor] ---------- 50
+22:10:41,076 INFO  [Monitor] ---------- 8
+22:10:41,110 INFO  [Monitor] ---------- 34
+22:10:41,151 INFO  [Monitor] ---------- 41
+22:10:41,176 INFO  [Monitor] ---------- 25
+22:10:41,193 INFO  [Monitor] ---------- 17
+22:10:41,210 INFO  [Monitor] ---------- 17
+22:10:41,226 INFO  [Monitor] ---------- 16
+22:10:41,268 INFO  [Monitor] ---------- 42
+22:10:41,318 INFO  [Monitor] ---------- 50
+22:10:41,343 INFO  [Monitor] ---------- 25
+22:10:41,385 INFO  [Monitor] ---------- 42
+22:10:41,435 INFO  [Monitor] ---------- 50
+22:10:41,493 INFO  [Monitor] ---------- 58
+22:10:41,551 INFO  [Monitor] ---------- 58
+22:10:41,785 INFO  [Monitor] ---------- 234
+22:10:41,935 INFO  [Monitor] ---------- 150
+22:10:41,969 INFO  [Monitor] ---------- 33
+22:10:42,052 INFO  [Monitor] ---------- 84
+22:10:42,144 INFO  [Monitor] ---------- 91
+22:10:42,202 INFO  [Monitor] ---------- 59
+22:10:42,227 INFO  [Monitor] ---------- 25
+22:10:42,269 INFO  [Monitor] ---------- 42
+22:10:42,294 INFO  [Monitor] ---------- 25
+22:10:42,310 INFO  [Monitor] ---------- 16
+22:10:42,327 INFO  [Monitor] ---------- 17
+22:10:42,344 INFO  [Monitor] ---------- 16
+22:10:42,352 INFO  [Monitor] ---------- 9
+22:10:42,369 INFO  [Monitor] ---------- 17
+22:10:42,377 INFO  [Monitor] ---------- 8
+22:10:42,394 INFO  [Monitor] ---------- 17
+22:10:42,410 INFO  [Monitor] ---------- 16
+22:10:42,427 INFO  [Monitor] ---------- 17
+22:10:42,494 INFO  [Monitor] ---------- 67
+22:10:42,511 INFO  [Monitor] ---------- 16
+22:10:42,527 INFO  [Monitor] ---------- 17
+22:10:42,544 INFO  [Monitor] ---------- 17
+22:10:42,569 INFO  [Monitor] ---------- 25
+22:10:42,577 INFO  [Monitor] ---------- 8
+22:10:42,594 INFO  [Monitor] ---------- 17
+22:10:42,602 INFO  [Monitor] ---------- 8
+22:10:42,610 INFO  [Monitor] ---------- 8
+22:10:42,619 INFO  [Monitor] ---------- 9
+22:10:42,627 INFO  [Monitor] ---------- 8
+22:10:42,635 INFO  [Monitor] ---------- 8
+22:10:42,644 INFO  [Monitor] ---------- 9
+22:10:42,652 INFO  [Monitor] ---------- 8
+22:10:42,660 INFO  [Monitor] ---------- 8
+22:10:42,694 INFO  [Monitor] ---------- 34
+22:10:42,719 INFO  [Monitor] ---------- 25
+22:10:42,727 INFO  [Monitor] ---------- 8
+22:10:42,744 INFO  [Monitor] ---------- 17
+22:10:42,761 INFO  [Monitor] ---------- 16
+22:10:42,777 INFO  [Monitor] ---------- 17
+22:10:42,794 INFO  [Monitor] ---------- 17
+22:10:42,811 INFO  [Monitor] ---------- 17
+22:10:42,827 INFO  [Monitor] ---------- 16
+22:10:42,836 INFO  [Monitor] ---------- 9
+22:10:42,844 INFO  [Monitor] ---------- 8
+22:10:42,869 INFO  [Monitor] ---------- 25
+22:10:42,877 INFO  [Monitor] ---------- 8
+22:10:42,894 INFO  [Monitor] ---------- 17
+22:10:42,902 INFO  [Monitor] ---------- 8
+22:10:42,911 INFO  [Monitor] ---------- 9
+22:10:42,927 INFO  [Monitor] ---------- 16
+22:10:42,944 INFO  [Monitor] ---------- 17
+22:10:42,952 INFO  [Monitor] ---------- 8
+22:10:42,969 INFO  [Monitor] ---------- 17
+22:10:43,002 INFO  [Monitor] ---------- 33
+22:10:43,011 INFO  [Monitor] ---------- 9
+22:10:43,027 INFO  [Monitor] ---------- 16
+22:10:43,035 INFO  [Monitor] ---------- 8
+22:10:43,044 INFO  [Monitor] ---------- 9
+22:10:43,052 INFO  [Monitor] ---------- 8
+22:10:43,060 INFO  [Monitor] ---------- 8
+22:10:43,069 INFO  [Monitor] ---------- 9
+22:10:43,111 INFO  [Monitor] ---------- 42
+22:10:43,119 INFO  [Monitor] ---------- 8
+22:10:43,127 INFO  [Monitor] ---------- 8
+22:10:43,136 INFO  [Monitor] ---------- 8
+22:10:43,144 INFO  [Monitor] ---------- 9
+22:10:43,152 INFO  [Monitor] ---------- 8
+22:10:43,194 INFO  [Monitor] ---------- 42
+22:10:43,202 INFO  [Monitor] ---------- 8
+22:10:43,211 INFO  [Monitor] ---------- 9
+22:10:43,219 INFO  [Monitor] ---------- 8
+22:10:43,227 INFO  [Monitor] ---------- 8
+22:10:43,236 INFO  [Monitor] ---------- 9
+22:10:43,244 INFO  [Monitor] ---------- 8
+22:10:43,252 INFO  [Monitor] ---------- 8
+22:10:43,261 INFO  [Monitor] ---------- 9
+22:10:43,269 INFO  [Monitor] ---------- 8
+22:10:43,277 INFO  [Monitor] ---------- 8
+22:10:43,286 INFO  [Monitor] ---------- 9
+22:10:43,327 INFO  [Monitor] ---------- 41
+22:10:43,336 INFO  [Monitor] ---------- 9
+22:10:43,344 INFO  [Monitor] ---------- 8
+22:10:43,352 INFO  [Monitor] ---------- 8
+22:10:43,361 INFO  [Monitor] ---------- 9
+22:10:43,369 INFO  [Monitor] ---------- 8
+22:10:43,377 INFO  [Monitor] ---------- 8
+22:10:43,386 INFO  [Monitor] ---------- 9
+22:10:43,394 INFO  [Monitor] ---------- 8
+22:10:43,403 INFO  [Monitor] ---------- 8
+22:10:43,411 INFO  [Monitor] ---------- 9
+22:10:43,419 INFO  [Monitor] ---------- 8
+22:10:43,427 INFO  [Monitor] ---------- 8
+22:10:43,436 INFO  [Monitor] ---------- 9
