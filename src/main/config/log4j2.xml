@@ -23,8 +23,11 @@
         <Pattern>%d %-5p [%c] %m%n</Pattern>
       </PatternLayout>
       <Policies>
+        <Delete basePath="${user.home}/logs">
+          <IfLastModified age="P5D"/>
+        </Delete>
         <TimeBasedTriggeringPolicy />
-        <SizeBasedTriggeringPolicy size="250 MB"/>
+        <SizeBasedTriggeringPolicy size="10 MB"/>
       </Policies>
     </RollingFile>
 

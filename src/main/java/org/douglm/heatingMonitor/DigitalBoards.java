@@ -22,8 +22,8 @@ public class DigitalBoards implements AutoCloseable {
     for (final var digitalBoardConfig: digitalBoardsConfig) {
       digitalBoards.add(
               new DigitalBoard(digitalBoardConfig,
-                               new PiSpi8DI(digitalBoardConfig, pi4j,
-                                            digitalBoardConfig.getSpiAddress())));
+                               new PiSpi8DI(pi4j,
+                                            digitalBoardConfig)));
     }
   }
 
