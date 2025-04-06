@@ -15,7 +15,7 @@ public class MonitorConfig {
   private boolean centigrade;
   private AnalogBoardConfig analogBoard;
   private List<DigitalBoardConfig> digitalBoards;
-  private List<CirculatorConfig> circulators;
+  private List<ZoneConfig> zones;
 
   public long getWaitTime() {
     return waitTime;
@@ -50,19 +50,19 @@ public class MonitorConfig {
     digitalBoards = val;
   }
 
-  public List<CirculatorConfig> getCirculators() {
-    return circulators;
+  public List<ZoneConfig> getZones() {
+    return zones;
   }
 
-  public void setCirculators(final List<CirculatorConfig> val) {
-    circulators = val;
+  public void setZones(final List<ZoneConfig> val) {
+    zones = val;
   }
 
   public ToString toStringSegment(final ToString ts) {
     ts.append("waitTime", waitTime)
       .append("analogBoard", analogBoard)
       .append("digitalBoards", digitalBoards)
-      .append("circulators", circulators);
+      .append("zones", zones);
 
     return ts;
   }

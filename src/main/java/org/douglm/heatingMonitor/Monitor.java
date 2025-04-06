@@ -10,8 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.pi4j.Pi4J;
 import com.pi4j.context.Context;
-import org.douglm.piSpi.PiSpi8AIChannelConfig.Mode;
-import org.douglm.piSpi.PiSpi8AIPlus;
 
 import java.io.File;
 import java.io.IOException;
@@ -94,50 +92,11 @@ public class Monitor implements Logged {
    */
 
   public void monitorBoards() {
-    int alwaysOnErrors = 0;
-    final var analogBoard = config.getAnalogBoard();
-    try (final var aToD = new PiSpi8AIPlus(pi4j, analogBoard);
-         final var digitalBoards = new DigitalBoards(pi4j,
-                                                     config.getDigitalBoards())) {
-      while (true) {
-        for (final var analogChannel: analogBoard.getChannels()) {
-          if (analogChannel.getMode() == Mode.thermistor) {
-            final var val = aToD.getTemperature(analogChannel.getChannel());
-            final double f = (val * 9 / 5) + 32;
-            final double out;
-            if (config.isCentigrade()) {
-              out = val;
-            } else {
-              out = f;
-            }
-            System.out.println(analogChannel.getName() + ": " + out);
-          }
-        }
-
-        for (final var digitalBoard: digitalBoards.getDigitalBoards()) {
-          final var db = digitalBoard.digitalBoard();
-          final var states = db.states();
-
-          for (final var input: digitalBoard.digitalBoardConfig().getInputs()) {
-            info(input.getName() + ": " +
-                         states[input.getIndex()]);
-            if (input.isAlwaysOn() && !states[input.getIndex()]) {
-              alwaysOnErrors++;
-              warn("Expected on for "  + input.getName());
-            }
-          }
-        }
-
-        if (alwaysOnErrors > 0) {
-          info("Always on errors: " + alwaysOnErrors);
-        }
-
-        try {
-          Thread.sleep(config.getWaitTime());
-        } catch (final InterruptedException ignored) {
-          break;
-        }
-      }
+    final var inputs = new InputsThread(pi4j, config);
+    inputs.start();
+    try {
+      inputs.join();
+    } catch (final InterruptedException ignored) {
     }
   }
 

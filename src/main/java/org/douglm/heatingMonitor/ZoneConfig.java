@@ -8,7 +8,7 @@ import org.bedework.base.ToString;
 /**
  * User: mike Date: 3/26/25 Time: 11:52
  */
-public class CirculatorConfig {
+public class ZoneConfig {
   private String name;
   private boolean hasPriority;
 

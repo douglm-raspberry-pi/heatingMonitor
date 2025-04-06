@@ -12,7 +12,8 @@ import org.douglm.piSpi.PiSpi8DIInputConfig;
  */
 public class DigitalInputConfig extends PiSpi8DIInputConfig {
   private boolean alwaysOn;
-  private String circulator;
+  private String zone;
+  private boolean circulator;
 
   public boolean isAlwaysOn() {
     return alwaysOn;
@@ -26,16 +27,28 @@ public class DigitalInputConfig extends PiSpi8DIInputConfig {
     alwaysOn = val;
   }
 
-  public String getCirculator() {
+  public String getZone() {
+    return zone;
+  }
+
+  public void setZone(final String val) {
+    zone = val;
+  }
+
+  /**
+   *
+   * @return true if this is a zone circulator
+   */
+  public boolean isCirculator() {
     return circulator;
   }
 
-  public void setCirculator(final String val) {
+  public void setCirculator(final boolean val) {
     circulator = val;
   }
 
   public ToString toStringSegment(final ToString ts) {
     return super.toStringSegment(ts)
-                .append("circulator", circulator);
+                .append("zone", zone);
   }
 }
