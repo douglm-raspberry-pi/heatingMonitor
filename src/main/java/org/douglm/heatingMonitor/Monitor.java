@@ -12,7 +12,6 @@ import com.pi4j.Pi4J;
 import com.pi4j.context.Context;
 import org.douglm.piSpi.PiSpi8AIChannelConfig.Mode;
 import org.douglm.piSpi.PiSpi8AIPlus;
-import org.douglm.piSpi.PiSpi8DI;
 
 import java.io.File;
 import java.io.IOException;
@@ -117,12 +116,8 @@ public class Monitor implements Logged {
 
         for (final var digitalBoard: digitalBoards.getDigitalBoards()) {
           final var db = digitalBoard.digitalBoard();
-          /* My belief is the board is seeing the low voltage transitions
-             from the ac input. Try multiple reads and OR the results.
-           */
-          final var states = or(db.states(),
-                                or(statesDelay(db),
-                                   or(statesDelay(db), statesDelay(db))));
+          final var states = db.states();
+
           for (final var input: digitalBoard.digitalBoardConfig().getInputs()) {
             info(input.getName() + ": " +
                          states[input.getIndex()]);
@@ -144,29 +139,6 @@ public class Monitor implements Logged {
         }
       }
     }
-  }
-
-  private boolean[] or(final boolean[] b1,
-                       final boolean[] b2) {
-    if (b1 == null) {
-      return b2;
-    }
-
-    final var out = new boolean[b1.length];
-    for (int i = 0; i < b1.length; i++) {
-      out[i] = b1[i] || b2[i];
-    }
-
-    return out;
-  }
-
-  private boolean[] statesDelay(final PiSpi8DI db) {
-    try {
-      Thread.sleep(1);
-    } catch (final InterruptedException e) {
-      throw new RuntimeException(e);
-    }
-    return db.states();
   }
 
   /* ==============================================================

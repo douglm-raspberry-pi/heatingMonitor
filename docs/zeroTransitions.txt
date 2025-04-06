@@ -1,5 +1,5 @@
 Having noted apparently random false results on a PiSpi8DI board I did
-some investigating and came up wit the following.
+some investigating and came up with the following.
 
 Below is output recording the transitions from high to low for a
 digital input wired to a constant 24V AC input.
@@ -20,7 +20,7 @@ Alternatively - referring to the schematic - removing Dx and using
 LDx as a rectifier as well as indicator and adding a capacitor would
 probably make it work as expected.
 
-My main issue is tha your site says this:
+My main issue is that your site says this:
 
         The Pi-SPi-8DI has 8 inputs that can either DC or AC (Max 24 V) and are optically isolated.
 
