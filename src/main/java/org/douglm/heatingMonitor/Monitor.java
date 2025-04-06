@@ -45,52 +45,6 @@ public class Monitor implements Logged {
     pi4j = Pi4J.newAutoContext();
   }
 
-  /*
-  public void testDigital() {
-    // Find config for chip address 1
-    DigitalBoardConfig digitalConfig = null;
-    for (final var digitalBoard : config.getDigitalBoards()) {
-      if (digitalBoard.getHardwareAddress() == 1) {
-        digitalConfig = digitalBoard;
-        break;
-      }
-    }
-
-    // Find the always on input
-    DigitalInputConfig inp = null;
-    for (final var input: digitalConfig.getInputs()) {
-      if (input.isAlwaysOn()) {
-        inp = input;
-        break;
-      }
-    }
-
-    final var db = new PiSpi8DI(pi4j, digitalConfig);
-
-    boolean lastState = false;
-    var lastTransition = System.currentTimeMillis();
-    final var transition = "----------";
-    final var onLine = "         |";
-    final var offLine = "|         ";
-    while (true) {
-      final var states = statesDelay(db);
-      final var state = states[inp.getIndex()];
-      if (lastState != state) {
-        final var newTransition = System.currentTimeMillis();
-        if (!state) {
-          info(transition + " " + (newTransition - lastTransition));
-          lastTransition = newTransition;
-        }
-        lastState = state;
-     // } else if (state) {
-     //   info(onLine);
-     // } else  {
-     //   info(offLine);
-      }
-    }
-  }
-   */
-
   public void monitorBoards() {
     final var inputs = new InputsThread(pi4j, config);
     inputs.start();
