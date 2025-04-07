@@ -54,8 +54,10 @@
     <!-- caching is noisy too -->
     <Logger name="net.sf.ehcache" level="info"/>
 
-    <!-- Set bedework categories -->
+    <!-- Set our categories -->
     <Logger name="org.douglm" level="debug"/>
+    <Logger name="org.douglm.heatingMonitor" level="debug"/>
+    <Logger name="org.douglm.piSpi" level="info"/>
 
     <Root level ="debug" >
       <AppenderRef ref="FILE"/>

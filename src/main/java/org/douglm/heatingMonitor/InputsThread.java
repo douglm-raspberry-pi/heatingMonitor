@@ -6,6 +6,8 @@ package org.douglm.heatingMonitor;
 import org.bedework.util.misc.AbstractProcessorThread;
 
 import com.pi4j.context.Context;
+import org.douglm.heatingMonitor.config.MonitorConfig;
+import org.douglm.heatingMonitor.status.MonitorStatus;
 import org.douglm.piSpi.PiSpi8AIChannelConfig;
 import org.douglm.piSpi.PiSpi8AIPlus;
 
@@ -14,37 +16,39 @@ import org.douglm.piSpi.PiSpi8AIPlus;
  */
 public class InputsThread extends AbstractProcessorThread {
   private final Context pi4j;
+  private final MonitorStatus status;
   private final MonitorConfig config;
-  private int alwaysOnErrors;
 
   /**
-   * @param config for the monitor
+   * @param pi4j context
+   * @param status for the monitor
    */
   public InputsThread(final Context pi4j,
-                      final MonitorConfig config) {
+                      final MonitorStatus status) {
     super("Inputs");
 
     this.pi4j = pi4j;
-    this.config = config;
+    this.status = status;
+    this.config = status.getConfig();
   }
 
   @Override
   public void runInit() {
-
+    setRunning(Boolean.TRUE);
   }
 
   @Override
   public void end(final String msg) {
-
+    setRunning(false);
   }
 
   @Override
-  public void runProcess() throws Throwable {
+  public void runProcess() {
     final var analogBoard = config.getAnalogBoard();
     try (final var aToD = new PiSpi8AIPlus(pi4j, analogBoard);
          final var digitalBoards = new DigitalBoards(pi4j,
                                                      config.getDigitalBoards())) {
-      while (true) {
+      while (getRunning()) {
         for (final var analogChannel: analogBoard.getChannels()) {
           if (analogChannel.getMode() == PiSpi8AIChannelConfig.Mode.thermistor) {
             final var val = aToD.getTemperature(
@@ -64,25 +68,27 @@ public class InputsThread extends AbstractProcessorThread {
           final var db = digitalBoard.digitalBoard();
           final var states = db.states();
 
-          for (final var input: digitalBoard.digitalBoardConfig()
+          for (final var ic: digitalBoard.digitalBoardConfig()
                                             .getInputs()) {
-            info(input.getName() + ": " +
-                         states[input.getIndex()]);
-            if (input.isAlwaysOn() && !states[input.getIndex()]) {
-              alwaysOnErrors++;
-              warn("Expected on for " + input.getName());
+            final var inputName = ic.getName();
+            final var istatus = states[ic.getIndex()];
+            final var input = status.getInput(inputName);
+
+            info(inputName + ": " +  istatus);
+            input.currentStatus(istatus);
+
+            if (ic.isAlwaysOn() && !istatus) {
+              status.incAlwaysOnErrors();
+              warn("Expected on for " + inputName);
             }
           }
         }
 
-        if (alwaysOnErrors > 0) {
-          info("Always on errors: " + alwaysOnErrors);
-        }
-
         synchronized (this) {
           try {
-            this.wait(config.getWaitTime());
+            this.wait(config.getInputsWaitTime());
           } catch (final InterruptedException ignored) {
+            setRunning(false);
             break;
           }
         }

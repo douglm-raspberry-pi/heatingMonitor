@@ -1,7 +1,7 @@
 /* ********************************************************************
     Appropriate copyright notice
 */
-package org.douglm.heatingMonitor;
+package org.douglm.heatingMonitor.config;
 
 import org.bedework.base.ToString;
 
@@ -26,6 +26,10 @@ public class ZoneConfig {
 
   public void setHasPriority(final boolean val) {
     hasPriority = val;
+  }
+
+  public boolean equals(final ZoneConfig other) {
+    return other != null && getName().equals(other.getName());
   }
 
   public ToString toStringSegment(final ToString ts) {

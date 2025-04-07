@@ -4,6 +4,7 @@
 package org.douglm.heatingMonitor;
 
 import com.pi4j.context.Context;
+import org.douglm.heatingMonitor.config.DigitalBoardConfig;
 import org.douglm.piSpi.PiSpi8DI;
 
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 /* ********************************************************************
     Appropriate copyright notice
 */
-package org.douglm.heatingMonitor;
+package org.douglm.heatingMonitor.config;
 
 import org.bedework.base.ToString;
 

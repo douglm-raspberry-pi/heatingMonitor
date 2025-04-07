@@ -1,7 +1,7 @@
 /* ********************************************************************
     Appropriate copyright notice
 */
-package org.douglm.heatingMonitor;
+package org.douglm.heatingMonitor.config;
 
 import org.bedework.base.ToString;
 
@@ -11,18 +11,37 @@ import java.util.List;
  * User: mike Date: 3/19/25 Time: 22:24
  */
 public class MonitorConfig {
-  private long waitTime;
+  private long inputsWaitTime;
+  private long monitorWaitTime;
   private boolean centigrade;
   private AnalogBoardConfig analogBoard;
   private List<DigitalBoardConfig> digitalBoards;
   private List<ZoneConfig> zones;
 
-  public long getWaitTime() {
-    return waitTime;
+  /**
+   *
+   * @return time in milliseconds inputs should wait. Should be
+   *          shorter than the monitor wait time.
+   */
+  public long getInputsWaitTime() {
+    return inputsWaitTime;
   }
 
-  public void setWaitTime(final long val) {
-    waitTime = val;
+  public void setInputsWaitTime(final long val) {
+    inputsWaitTime = val;
+  }
+
+  /**
+   *
+   * @return time in milliseconds monitor should wait. Should be
+   *          longer than the inputs wait time.
+   */
+  public long getMonitorWaitTime() {
+    return monitorWaitTime;
+  }
+
+  public void setMonitorWaitTime(final long val) {
+    monitorWaitTime = val;
   }
 
   public boolean isCentigrade() {
@@ -59,7 +78,7 @@ public class MonitorConfig {
   }
 
   public ToString toStringSegment(final ToString ts) {
-    ts.append("waitTime", waitTime)
+    ts.append("waitTime", inputsWaitTime)
       .append("analogBoard", analogBoard)
       .append("digitalBoards", digitalBoards)
       .append("zones", zones);
