@@ -1,0 +1,35 @@
+{
+  "helpers": [
+    {
+      "name": "config",
+      "className": "org.douglm.heatingMonitor.web.gethelpers.ProcessGetConfig"
+    },
+    {
+      "name": "status",
+      "className": "org.bedework.eventreg.ws.gethelpers.ProcessEventChange"
+    },
+    {
+      "name": "selectForms",
+      "className": "org.bedework.eventreg.ws.gethelpers.ProcessSelectForms"
+    }
+  ],
+
+  "methodHelpers": [
+    {
+      "method": "POST",
+      "helpers": [
+        {
+          "name": "status.do",
+          "className": "org.douglm.heatingMonitor.web.posthelpers.ProcessStatus",
+          "forwards": [
+            {
+              "name": "success",
+              "path": "/docs/eventreg.jsp"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+
+}
