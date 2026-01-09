@@ -10,6 +10,8 @@
   </parent>
 
   <artifactId>web-service</artifactId>
+  <name>Web service for heating monitor data</name>
+  <packaging>war</packaging>
 
   <dependencies>
     <dependency>
