@@ -1,5 +1,5 @@
 # heatingMonitor
-Use a raspberry pie with widgetlords sensor boards to monitor a heating system
+Use a raspberry pi with widgetlords sensor boards to monitor a heating system
 
 The heatng system consists of a boiler, 2 zones each with a number of honeywell zone valves splitting the main zones into smaller pieces.
 
