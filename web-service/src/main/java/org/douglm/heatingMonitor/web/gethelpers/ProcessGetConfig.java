@@ -13,6 +13,10 @@ public class ProcessGetConfig
   public void hmProcess(final List<String> resourceUri,
                         final HttpServletRequest req,
                         final HttpServletResponse resp) {
-    outputJson(resp, null, null, getMethodBase().getConfig());
+    try {
+      outputJson(resp, null, null, getMethodBase().getConfig());
+    } catch (final Throwable t) {
+      sendJsonError(resp, t.getMessage());
+    }
   }
 }

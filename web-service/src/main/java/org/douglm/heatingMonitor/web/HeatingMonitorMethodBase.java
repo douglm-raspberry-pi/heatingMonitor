@@ -176,7 +176,12 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
       return config;
     }
 
-    config = readConfig("monitor.yaml", MonitorConfig.class);
+    final var hcresp = readConfig("monitor.yaml",
+                                  MonitorConfig.class);
+    if (!hcresp.isOk()) {
+      throw new MonitorException(hcresp.getException());
+    }
+
     return config;
   }
   

@@ -52,8 +52,13 @@ public class Monitor implements Logged {
     /* Configurations are read from config files.
        Eventually from web service
      */
-    hardwareConfig = readConfig("hardware.yaml", HardwareConfig.class);
+    final var hcresp = readConfig("hardware.yaml",
+                                  HardwareConfig.class);
+    if (!hcresp.isOk()) {
+      throw new MonitorException(hcresp.getMessage());
+    }
 
+    hardwareConfig = hcresp.getEntity();
     debug(hardwareConfig.toString());
     pi4j = Pi4J.newAutoContext();
   }
