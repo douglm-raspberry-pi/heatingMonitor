@@ -14,7 +14,7 @@
   <packaging>war</packaging>
 
   <properties>
-    <org.bedework.war.dependency>wildflyee.api</org.bedework.war.dependency>
+    <org.bedework.war.dependency>jakarta.jms.api</org.bedework.war.dependency>
   </properties>
 
   <dependencies>
