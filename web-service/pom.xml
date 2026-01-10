@@ -12,11 +12,11 @@
   <artifactId>web-service</artifactId>
   <name>Web service for heating monitor data</name>
   <packaging>war</packaging>
-
+<!--
   <properties>
-    <org.bedework.war.dependency>jakarta.jms.api</org.bedework.war.dependency>
+    <org.bedework.war.dependency>org.bedework.calendar.rw-war</org.bedework.war.dependency>
   </properties>
-
+-->
   <dependencies>
     <dependency>
       <groupId>org.douglm.heating-monitor</groupId>
