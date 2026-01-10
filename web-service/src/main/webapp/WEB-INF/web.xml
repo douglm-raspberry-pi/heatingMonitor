@@ -20,7 +20,7 @@
 
   <servlet>
     <servlet-name>eventregws</servlet-name>
-    <servlet-class>org.bedework.eventreg.ws.EvregwsServlet</servlet-class>
+    <servlet-class>org.douglm.heatingMonitor.web.HeatingMonitorServlet</servlet-class>
 
     <init-param>
       <!-- Only applies if debug on - causes responses to be wrapped. -->
