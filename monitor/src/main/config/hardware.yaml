@@ -1,3 +1,4 @@
+serverUrl: http:localhost:8080/hmonws
 analogBoard:
     spiAddress: 1
     spiName: analog
