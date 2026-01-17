@@ -59,8 +59,15 @@ public class Monitor implements Logged {
     }
 
     hardwareConfig = hcresp.getEntity();
+    validateHardwareConfig();
     debug(hardwareConfig.toString());
     pi4j = Pi4J.newAutoContext();
+  }
+
+  public void validateHardwareConfig() {
+    if (hardwareConfig.getServerUrl() == null) {
+      throw new MonitorException("Hardware cnfig must sepcify server url");
+    }
   }
 
   public Monitor init() {
@@ -70,7 +77,7 @@ public class Monitor implements Logged {
 
       try (final CloseableHttpResponse hresp =
                    HttpUtil.doGet(cl,
-                                  new URI(hardwareConfig.getServerUrl()),
+                                  new URI(hardwareConfig.getServerUrl() + "/config"),
                                   this::getDefaultHeaders,
                                   null)) {   // content type
         final int status = HttpUtil.getStatus(hresp);
