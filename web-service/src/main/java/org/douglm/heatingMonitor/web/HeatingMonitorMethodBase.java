@@ -182,6 +182,8 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
       throw new MonitorException(hcresp.getException());
     }
 
+    config = hcresp.getEntity();
+
     return config;
   }
   
