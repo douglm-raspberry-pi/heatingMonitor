@@ -154,11 +154,12 @@ public class Monitor implements Logged {
       }
     }
 
+    /*
     for (final var zone: status.getZones()) {
       if (zone.getCirculator() == null) {
         return resp.invalid("Circulator is null: " + zone);
       }
-    }
+    }*/
 
     resp.setEntity(status);
 
