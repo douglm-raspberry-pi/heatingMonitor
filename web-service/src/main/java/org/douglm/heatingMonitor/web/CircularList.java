@@ -95,4 +95,8 @@ public class CircularList<T> {
     }
 
   }
+
+  public int size() {
+    return size;
+  }
 }

@@ -152,6 +152,9 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
       return;
     }
     statuses.addValue(val);
+    if (debug()) {
+      debug("Statuses contains {} values", statuses.size());
+    }
   }
 
   @Override
