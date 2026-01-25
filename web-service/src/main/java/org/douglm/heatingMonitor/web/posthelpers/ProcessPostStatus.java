@@ -25,6 +25,7 @@ public class ProcessPostStatus
       final var status = mb.getMapper()
                            .readValue(req.getReader(),
                                       MonitorStatus.class);
+      mb.getLogger().info("Status {}", status);
       if (debug()) {
         debug("Status {}", status);
       }
