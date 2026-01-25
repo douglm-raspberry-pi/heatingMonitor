@@ -13,6 +13,6 @@ public class ProcessGetAllStatus
   public void hmProcess(final List<String> resourceUri,
                         final HttpServletRequest req,
                         final HttpServletResponse resp) {
-    outputJson(resp, null, null, getMethodBase().getAllStatuses());
+    outputJson(resp, null, null, getAllStatuses());
   }
 }

@@ -26,14 +26,12 @@ import org.bedework.util.servlet.config.AppInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.douglm.heatingMonitor.common.MonitorException;
 import org.douglm.heatingMonitor.common.config.MonitorConfig;
-import org.douglm.heatingMonitor.common.status.MonitorStatus;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.util.Collection;
 import java.util.List;
 
 import static org.douglm.heatingMonitor.common.util.MonitorUtil.readConfig;
@@ -57,10 +55,6 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
   private ObjectMapper objectMapper;
   private MonitorConfig config;
   private WebGlobals webGlobals;
-
-  // We'll build a ring of these
-  private static final CircularList<MonitorStatus> statuses =
-          new CircularList<>(100);
 
   @Override
   public boolean beforeMethod(final HttpServletRequest req,
@@ -135,30 +129,6 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
 
   public WebGlobals getWebGlobals() {
     return webGlobals;
-  }
-
-  public MonitorStatus getCurrentStatus() {
-    final var current = statuses.head();
-    if (current == null) {
-      return null;
-    }
-
-    return current.value();
-  }
-
-  public Collection<MonitorStatus> getAllStatuses() {
-    return statuses.allForward();
-  }
-
-  public void addStatus(final MonitorStatus val) {
-    if (val == null) {
-      warn("Attempt to add null status");
-      return;
-    }
-    statuses.addValue(val);
-    if (debug()) {
-      debug("Statuses contains {} values", statuses.size());
-    }
   }
 
   @Override
