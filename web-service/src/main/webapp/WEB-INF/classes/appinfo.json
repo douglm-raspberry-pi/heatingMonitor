@@ -6,11 +6,11 @@
     },
     {
       "name": "status",
-      "className": "org.bedework.eventreg.ws.gethelpers.ProcessEventChange"
+      "className": "org.douglm.heatingMonitor.web.gethelpers.ProcessGetStatus"
     },
     {
-      "name": "selectForms",
-      "className": "org.bedework.eventreg.ws.gethelpers.ProcessSelectForms"
+      "name": "allstatus",
+      "className": "org.douglm.heatingMonitor.web.gethelpers.ProcessGetAllStatus"
     }
   ],
 
@@ -19,8 +19,8 @@
       "method": "POST",
       "helpers": [
         {
-          "name": "status",
-          "className": "org.douglm.heatingMonitor.web.posthelpers.ProcessStatus",
+          "name": "postStatus",
+          "className": "org.douglm.heatingMonitor.web.posthelpers.ProcessPostStatus",
           "forwards": [
             {
               "name": "success",
