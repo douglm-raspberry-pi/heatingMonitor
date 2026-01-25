@@ -22,7 +22,7 @@ public class ProcessPostStatus
                         final HttpServletResponse resp) {
     try {
       final var mb = getMethodBase();
-      addStatus(
+      mb.addStatus(
               mb.getMapper()
                 .readValue(req.getReader(),
                            MonitorStatus.class));
