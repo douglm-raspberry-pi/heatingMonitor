@@ -50,7 +50,7 @@ public class MonitorWebServiceClient implements Logged {
 
       try (final CloseableHttpResponse hresp =
                    HttpUtil.doGet(cl,
-                                  new URI(serverUrl + "/postStatus"),
+                                  new URI(serverUrl + "/config"),
                                   this::getDefaultHeaders,
                                   null)) {   // content type
         final int status = HttpUtil.getStatus(hresp);
@@ -81,7 +81,7 @@ public class MonitorWebServiceClient implements Logged {
 
       try (final CloseableHttpResponse hresp =
                    HttpUtil.doPost(cl,
-                                  new URI(serverUrl + "/config"),
+                                  new URI(serverUrl + "/postStatus"),
                                   this::getDefaultHeaders,
                                   "application/json",
                                   json)) {
