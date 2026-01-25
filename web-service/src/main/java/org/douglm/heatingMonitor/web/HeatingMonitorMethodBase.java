@@ -147,6 +147,10 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
   }
 
   public void addStatus(final MonitorStatus val) {
+    if (val == null) {
+      warn("Attempt to add null status");
+      return;
+    }
     statuses.addValue(val);
   }
 
