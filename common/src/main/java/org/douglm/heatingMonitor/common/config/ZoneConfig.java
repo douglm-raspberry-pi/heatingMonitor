@@ -12,18 +12,9 @@ import java.util.List;
  * zone valves - covering perhaps a single room.
  * User: mike Date: 3/26/25 Time: 11:52
  */
-public class ZoneConfig {
-  private String name;
+public class ZoneConfig extends Circuit {
   private boolean hasPriority;
   private List<SubZoneConfig> subZones;
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(final String val) {
-    name = val;
-  }
 
   public boolean getHasPriority() {
     return hasPriority;
@@ -46,12 +37,8 @@ public class ZoneConfig {
   }
 
   public ToString toStringSegment(final ToString ts) {
-    return ts.append("name", getName())
-             .append("hasPriority", getHasPriority())
-             .append("subZones", getSubZones());
-  }
-
-  public String toString() {
-    return toStringSegment(new ToString(this)).toString();
+    return super.toStringSegment(ts)
+                .append("hasPriority", getHasPriority())
+                .append("subZones", getSubZones());
   }
 }

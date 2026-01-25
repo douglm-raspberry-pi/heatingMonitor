@@ -3,6 +3,8 @@
 */
 package org.douglm.heatingMonitor.common.status;
 
+import org.bedework.base.ToString;
+
 import org.douglm.heatingMonitor.common.config.MonitorConfig;
 
 import java.util.Collection;
@@ -64,5 +66,24 @@ public class MonitorStatus {
 
   public void incAlwaysOnErrors() {
     alwaysOnErrors++;
+  }
+
+  public Temperature findTemp(final String name) {
+    for (final var zone: getZones()) {
+      final var temp = zone.findTemp(name);
+      if (temp != null) {
+        return temp;
+      }
+    }
+
+    return null;
+  }
+
+  public String toString() {
+    return new ToString(this)
+            .append("startTime", getStartTime())
+            .append("zones", getZones())
+            .append("alwaysOnErrors", getAlwaysOnErrors())
+            .toString();
   }
 }

@@ -5,10 +5,13 @@ package org.douglm.heatingMonitor.common.status;
 
 import org.bedework.base.ToString;
 
+import org.douglm.heatingMonitor.common.config.SubZoneConfig;
 import org.douglm.heatingMonitor.common.config.ZoneConfig;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /** provides information about a zone - consists of a number of
  * sub-zones, controlled by inputs and a circulator.
@@ -22,6 +25,8 @@ public class Zone implements SwitchedEntity {
   private boolean circulatorOn;
   private boolean inputChanged;
   private boolean wasChecked;
+  private final Map<String, Temperature> temps = new HashMap<>();
+  private final Map<String, Zone> subZones = new HashMap<>();
   private final List<Input> inputs = new ArrayList<>();
 
   private long lastChange;
@@ -30,7 +35,23 @@ public class Zone implements SwitchedEntity {
   public Zone(final ZoneConfig config) {
     this.config = config;
     this.name = config.getName();
+    if (config.getOutTempName() != null) {
+      putTemp(new Temperature(config.getOutTempName()));
+    }
+    if (config.getReturnTempName() != null) {
+      putTemp(new Temperature(config.getReturnTempName()));
+    }
+
+    if (config.getSubZones() != null) {
+      for (final var szc: config.getSubZones()) {
+        addSubZone(new Zone(szc));
+      }
+    }
     this.lastChange = System.currentTimeMillis();
+  }
+
+  private Zone(final SubZoneConfig config) {
+    this((ZoneConfig)config);
   }
 
   public String getName() {
@@ -85,6 +106,30 @@ public class Zone implements SwitchedEntity {
     circulatorOn = val;
   }
 
+  public Map<String, Temperature> getTemps() {
+    return temps;
+  }
+
+  public void putTemp(final Temperature val) {
+    temps.put(val.getName(), val);
+  }
+
+  public Temperature findTemp(final String name) {
+    final var temp = temps.get(name);
+    if (temp != null) {
+      return temp;
+    }
+
+    for (final var sz: subZones.values()) {
+      final var szTemp = sz.getTemps().get(name);
+      if (szTemp != null) {
+        return szTemp;
+      }
+    }
+
+    return null;
+  }
+
   public List<Input> getInputs() {
     return inputs;
   }
@@ -114,6 +159,14 @@ public class Zone implements SwitchedEntity {
 
   public boolean equals(final Zone other) {
     return other != null && this.config.equals(other.getConfig());
+  }
+
+  public void addSubZone(final Zone val) {
+    subZones.put(val.getName(), val);
+  }
+
+  public Zone getSubZone(final String name) {
+    return subZones.get(name);
   }
 
   public ToString toStringSegment(final ToString ts) {

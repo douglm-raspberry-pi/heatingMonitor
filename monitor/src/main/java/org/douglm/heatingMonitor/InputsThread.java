@@ -18,6 +18,7 @@ public class InputsThread extends AbstractProcessorThread {
   private final Context pi4j;
   private final MonitorStatus status;
   private final HardwareConfig config;
+  private final MonitorWebServiceClient webClient;
 
   /**
    * @param pi4j context
@@ -25,12 +26,14 @@ public class InputsThread extends AbstractProcessorThread {
    */
   public InputsThread(final Context pi4j,
                       final MonitorStatus status,
-                      final HardwareConfig config) {
+                      final HardwareConfig config,
+                      final MonitorWebServiceClient webClient) {
     super("Inputs");
 
     this.pi4j = pi4j;
     this.status = status;
     this.config = config;
+    this.webClient = webClient;
   }
 
   @Override
@@ -54,14 +57,12 @@ public class InputsThread extends AbstractProcessorThread {
           if (analogChannel.getMode() == PiSpi8AIChannelConfig.Mode.thermistor) {
             final var val = aToD.getTemperature(
                     analogChannel.getChannel());
-            final double f = (val * 9 / 5) + 32;
-            final double out;
-            if (status.getConfig().isCentigrade()) {
-              out = val;
-            } else {
-              out = f;
+
+            final var temp = status.findTemp(
+                    analogChannel.getName());
+            if (temp != null) {
+              temp.setDegreesCelsius(val);
             }
-            System.out.println(analogChannel.getName() + ": " + out);
           }
         }
 
@@ -83,6 +84,11 @@ public class InputsThread extends AbstractProcessorThread {
               warn("Expected on for " + inputName);
             }
           }
+        }
+
+        final var postRes = webClient.postStatus(status);
+        if (!postRes.isOk()) {
+          warn(postRes.toString());
         }
 
         synchronized (this) {

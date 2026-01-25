@@ -4,17 +4,11 @@
 package org.douglm.heatingMonitor;
 
 import org.bedework.base.response.GetEntityResponse;
-import org.bedework.util.http.Headers;
-import org.bedework.util.http.HttpUtil;
 import org.bedework.util.logging.BwLogger;
 import org.bedework.util.logging.Logged;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pi4j.Pi4J;
 import com.pi4j.context.Context;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.douglm.heatingMonitor.common.MonitorException;
 import org.douglm.heatingMonitor.common.config.MonitorConfig;
 import org.douglm.heatingMonitor.common.status.Input;
@@ -22,31 +16,19 @@ import org.douglm.heatingMonitor.common.status.MonitorStatus;
 import org.douglm.heatingMonitor.common.status.Zone;
 import org.douglm.heatingMonitor.config.HardwareConfig;
 
-import java.net.URI;
-
 import static org.douglm.heatingMonitor.common.util.MonitorUtil.readConfig;
 
 /**
  * User: mike Date: 3/13/25 Time: 14:30
  */
 public class Monitor implements Logged {
-  // TODO - this needs to be somewhere it gets shut down properly
-  private static CloseableHttpClient http;
-
   private final Context pi4j;
   private final HardwareConfig hardwareConfig;
 
   private MonitorConfig monitorConfig;
   private MonitorStatus status;
 
-  private ObjectMapper objectMapper;
-
-  private static final Headers defaultHeaders;
-
-  static {
-    defaultHeaders = new Headers();
-    defaultHeaders.add("Accept", "application/json");
-  }
+  private final MonitorWebServiceClient webClient;
 
   public Monitor() {
     /* Configurations are read from config files.
@@ -62,6 +44,8 @@ public class Monitor implements Logged {
     validateHardwareConfig();
     debug(hardwareConfig.toString());
     pi4j = Pi4J.newAutoContext();
+    webClient = new MonitorWebServiceClient(
+            hardwareConfig.getServerUrl());
   }
 
   public void validateHardwareConfig() {
@@ -71,44 +55,30 @@ public class Monitor implements Logged {
   }
 
   public Monitor init() {
-    // Read monitor config.
-    try {
-      final CloseableHttpClient cl = getClient();
-
-      try (final CloseableHttpResponse hresp =
-                   HttpUtil.doGet(cl,
-                                  new URI(hardwareConfig.getServerUrl() + "/config"),
-                                  this::getDefaultHeaders,
-                                  null)) {   // content type
-        final int status = HttpUtil.getStatus(hresp);
-
-        if ((status / 100) != 2) {
-          throw new MonitorException("Unable to fetch monitor configuration");
-        }
-
-        monitorConfig = getMapper()
-                .readValue(hresp.getEntity().getContent(),
-                           MonitorConfig.class);
-        debug(monitorConfig.toString());
+    final var webRes = webClient.readConfig();
+    if (!webRes.isOk()) {
+      if (webRes.getException() != null) {
+        throw new MonitorException(webRes.getException());
       }
 
-      final var resp = validateConfig();
-      if (!resp.isOk()) {
-        throw new MonitorException(resp.getMessage());
-      }
-      status = resp.getEntity();
-    } catch(final Throwable t) {
-      if (t instanceof MonitorException) {
-        throw (MonitorException)t;
-      }
-      throw new MonitorException(t);
+      throw new MonitorException(webRes.getMessage());
     }
+    monitorConfig = webRes.getEntity();
+    debug(monitorConfig.toString());
+
+    final var resp = fromConfig();
+    if (!resp.isOk()) {
+      throw new MonitorException(resp.getMessage());
+    }
+    status = resp.getEntity();
 
     return this;
   }
 
   public void monitorBoards() {
-    final var inputs = new InputsThread(pi4j, status, hardwareConfig);
+    final var inputs = new InputsThread(pi4j, status,
+                                        hardwareConfig,
+                                        webClient);
     inputs.start();
 
     final var monitor = new MonitorThread(status);
@@ -120,7 +90,7 @@ public class Monitor implements Logged {
     }
   }
 
-  private GetEntityResponse<MonitorStatus> validateConfig() {
+  private GetEntityResponse<MonitorStatus> fromConfig() {
     final var status = new MonitorStatus(monitorConfig);
     final var resp = new GetEntityResponse<MonitorStatus>();
 
@@ -169,6 +139,14 @@ public class Monitor implements Logged {
         if (zone != null) {
           if (ic.isCirculator()) {
             zone.setCirculator(input);
+          } else if (ic.isSubZone()) {
+            final var sz = zone.getSubZone(ic.getName());
+            if (sz == null) {
+              warn("No subzone {} for zone {}",
+                   ic.getName(), zone.getName());
+            } else {
+              sz.addInput(input);
+            }
           } else {
             zone.addInput(input);
           }
@@ -187,36 +165,9 @@ public class Monitor implements Logged {
     return resp;
   }
 
-  private CloseableHttpClient getClient() {
-    if (http == null) {
-      try {
-        http  = HttpClients.createDefault();
-      } catch (final Throwable t) {
-        error(t);
-        throw new MonitorException(t);
-      }
-    }
-
-    return http;
-  }
-
-  private ObjectMapper getMapper() {
-    if (objectMapper != null) {
-      return objectMapper;
-    }
-
-    objectMapper = new ObjectMapper();
-
-    return objectMapper;
-  }
-
-  private Headers getDefaultHeaders() {
-    return defaultHeaders;
-  }
-
-  /* ==============================================================
+  /* ====================================================
    *                   Logged methods
-   * ============================================================== */
+   * ==================================================== */
 
   private final BwLogger logger = new BwLogger();
 

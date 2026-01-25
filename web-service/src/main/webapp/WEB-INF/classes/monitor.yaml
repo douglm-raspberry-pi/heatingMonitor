@@ -2,7 +2,10 @@ inputsWaitTime: 2000  # Inputs read loop wait time
 monitorWaitTime: 5000  # Monitor loop wait time
 centigrade: false
 zones:
+  - name: "Boiler"
+    outTempName: "Boiler out"
   - name: "Apartment 1"
+    returnTempName: "Apartment 1 return"
     hasPriority: false
     subZones:
       - name: "Apt #1 Bed/Bath"
@@ -10,6 +13,7 @@ zones:
       - name: "Apt #1 Front"
       - name: "Apt #1 Kitchen"
   - name: "Apartment 2"
+    returnTempName: "Apartment 2 return"
     hasPriority: false
   - name: "Hot Water"
     hasPriority: false

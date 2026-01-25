@@ -1,4 +1,4 @@
-serverUrl: http:localhost:8080/hmonws
+serverUrl: http://localhost:8080/hmonws
 analogBoard:
     spiAddress: 1
     spiName: analog
@@ -41,17 +41,21 @@ digitalBoards:
       - index: 0
         name: "Apt #1 Bed/Bath"
         highTrue: true
+        subZone: true
         zone: "Apartment 1"
       - index: 1
         name: "Apt #1 Back"
         highTrue: true
+        subZone: true
         zone: "Apartment 1"
       - index: 2
         name: "Apt #1 Front"
         highTrue: true
+        subZone: true
         zone: "Apartment 1"
       - index: 3
         name: "Apt #1 Kitchen"
+        subZone: true
         highTrue: true
         zone: "Apartment 1"
   - spiAddress: 3

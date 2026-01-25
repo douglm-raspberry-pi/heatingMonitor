@@ -14,6 +14,7 @@ public class DigitalInputConfig extends PiSpi8DIInputConfig {
   private boolean alwaysOn;
   private String zone;
   private boolean circulator;
+  private boolean subZone;
 
   /**
    *
@@ -47,6 +48,18 @@ public class DigitalInputConfig extends PiSpi8DIInputConfig {
 
   public void setCirculator(final boolean val) {
     circulator = val;
+  }
+
+  /**
+   *
+   * @return true if this is a subzone.
+   */
+  public boolean isSubZone() {
+    return subZone;
+  }
+
+  public void setSubZone(final boolean val) {
+    subZone = val;
   }
 
   public ToString toStringSegment(final ToString ts) {
