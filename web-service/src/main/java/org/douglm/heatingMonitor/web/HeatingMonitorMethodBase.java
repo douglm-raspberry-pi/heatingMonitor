@@ -117,6 +117,7 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
         return;
       }
 
+      debug("About to call helper execute method");
       helper.execute(resourceUri, req, resp, this);
     } catch (final ServletException se) {
       throw se;
