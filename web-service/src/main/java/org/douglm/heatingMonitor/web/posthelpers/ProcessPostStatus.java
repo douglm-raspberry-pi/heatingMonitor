@@ -22,10 +22,13 @@ public class ProcessPostStatus
                         final HttpServletResponse resp) {
     try {
       final var mb = getMethodBase();
-      mb.addStatus(
-              mb.getMapper()
-                .readValue(req.getReader(),
-                           MonitorStatus.class));
+      final var status = mb.getMapper()
+                           .readValue(req.getReader(),
+                                      MonitorStatus.class);
+      if (debug()) {
+        debug("Status {}", status);
+      }
+      mb.addStatus(status);
     } catch (final Throwable t) {
       sendJsonError(resp, t.getMessage());
     }
