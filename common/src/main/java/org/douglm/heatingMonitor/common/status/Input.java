@@ -5,6 +5,8 @@ package org.douglm.heatingMonitor.common.status;
 
 import org.bedework.base.ToString;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * User: mike Date: 4/6/25 Time: 13:38
  */
@@ -31,6 +33,7 @@ public class Input implements SwitchedEntity {
     return name;
   }
 
+  @JsonIgnore
   public Zone getZone() {
     return zone;
   }
