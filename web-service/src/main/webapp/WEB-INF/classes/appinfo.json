@@ -19,7 +19,7 @@
       "method": "POST",
       "helpers": [
         {
-          "name": "status.do",
+          "name": "status",
           "className": "org.douglm.heatingMonitor.web.posthelpers.ProcessStatus",
           "forwards": [
             {

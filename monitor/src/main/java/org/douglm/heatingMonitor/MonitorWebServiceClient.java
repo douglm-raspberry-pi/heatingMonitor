@@ -50,7 +50,7 @@ public class MonitorWebServiceClient implements Logged {
 
       try (final CloseableHttpResponse hresp =
                    HttpUtil.doGet(cl,
-                                  new URI(serverUrl + "/config"),
+                                  new URI(serverUrl + "/status"),
                                   this::getDefaultHeaders,
                                   null)) {   // content type
         final int status = HttpUtil.getStatus(hresp);
