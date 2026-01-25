@@ -21,10 +21,11 @@ public class ProcessPostStatus
                         final HttpServletRequest req,
                         final HttpServletResponse resp) {
     try {
-      getMethodBase().addStatus(
-              getMethodBase().getMapper()
-                             .readValue(req.getReader(),
-                                        MonitorStatus.class));
+      final var mb = getMethodBase();
+      mb.addStatus(
+              mb.getMapper()
+                .readValue(req.getReader(),
+                           MonitorStatus.class));
     } catch (final Throwable t) {
       sendJsonError(resp, t.getMessage());
     }

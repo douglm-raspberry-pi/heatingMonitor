@@ -59,7 +59,7 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
   private WebGlobals webGlobals;
 
   // We'll build a ring of these
-  private static CircularList<MonitorStatus> statuses =
+  private static final CircularList<MonitorStatus> statuses =
           new CircularList<>(100);
 
   @Override
@@ -67,6 +67,10 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
                               final HttpServletResponse resp) {
     if (!super.beforeMethod(req, resp)) {
       return false;
+    }
+
+    if (debug()) {
+      debug("beforeMethod {}", this);
     }
 
     webGlobals = (WebGlobals)rutil.getSessionAttr(WebGlobals.webGlobalsAttrName);

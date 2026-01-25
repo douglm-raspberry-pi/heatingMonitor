@@ -1,4 +1,4 @@
-inputsWaitTime: 2000  # Inputs read loop wait time
+inputsWaitTime: 5000  # Inputs read loop wait time
 monitorWaitTime: 5000  # Monitor loop wait time
 centigrade: false
 zones:
