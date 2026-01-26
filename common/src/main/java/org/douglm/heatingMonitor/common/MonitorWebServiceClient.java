@@ -1,7 +1,7 @@
 /* ********************************************************************
     Appropriate copyright notice
 */
-package org.douglm.heatingMonitor;
+package org.douglm.heatingMonitor.common;
 
 import org.bedework.base.response.GetEntityResponse;
 import org.bedework.base.response.Response;
@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.douglm.heatingMonitor.common.MonitorException;
 import org.douglm.heatingMonitor.common.config.MonitorConfig;
 import org.douglm.heatingMonitor.common.status.MonitorStatus;
 
@@ -62,7 +61,9 @@ public class MonitorWebServiceClient implements Logged {
         final var monitorConfig = getMapper()
                 .readValue(hresp.getEntity().getContent(),
                            MonitorConfig.class);
-        debug(monitorConfig.toString());
+        if (debug()) {
+          debug(monitorConfig.toString());
+        }
         res.setEntity(monitorConfig);
       }
     } catch(final Throwable t) {
@@ -78,6 +79,9 @@ public class MonitorWebServiceClient implements Logged {
     try {
       final CloseableHttpClient cl = getClient();
       final var json = getMapper().writeValueAsString(mstatus);
+      if (debug()) {
+        debug(json);
+      }
 
       try (final CloseableHttpResponse hresp =
                    HttpUtil.doPost(cl,

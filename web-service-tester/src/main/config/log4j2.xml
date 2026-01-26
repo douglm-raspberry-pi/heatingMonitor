@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ============================================================= -->
+<!--                                                               -->
+<!--  Log4j Configuration for heating monitor                      -->
+<!--                                                               -->
+<!-- ============================================================= -->
+
+<Configuration>
+  <!-- ================================= -->
+  <!-- Preserve messages in a local file -->
+  <!-- ================================= -->
+
+  <!-- A time/date based rolling appender -->
+  <Appenders>
+    <RollingFile name="FILE" fileName="${user.home}/logs/hmon.log"
+                 filePattern="logs/hmon-%d{yyyy-MM-dd}.log">
+      <layout class="org.apache.log4j.PatternLayout">
+        <!-- The default pattern: Date Priority [Category] Message\n -->
+        <param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
+      </layout>
+      <PatternLayout>
+        <Pattern>%d %-5p [%c] %m%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <Delete basePath="${user.home}/logs">
+          <IfLastModified age="P5D"/>
+        </Delete>
+        <TimeBasedTriggeringPolicy />
+        <SizeBasedTriggeringPolicy size="10 MB"/>
+      </Policies>
+    </RollingFile>
+
+    <Console name="CONSOLE" target="SYSTEM_OUT">
+      <param name="Threshold" value="DEBUG"/>
+
+      <PatternLayout pattern="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
+    </Console>
+  </Appenders>
+
+  <Loggers>
+    <!-- ================ -->
+    <!-- Limit categories -->
+    <!-- ================ -->
+
+    <!-- Limit the org.apache category to INFO as its DEBUG is verbose -->
+    <Logger name="org.apache" level="info"/>
+
+    <Logger name="httpclient.wire.content" level="info"/>
+
+    <!-- ical4j is noisy -->
+    <Logger name="net.fortuna.ical4j" level="info"/>
+
+    <!-- caching is noisy too -->
+    <Logger name="net.sf.ehcache" level="info"/>
+
+    <!-- Set our categories -->
+    <Logger name="org.douglm" level="debug"/>
+    <Logger name="org.douglm.heatingMonitor" level="debug"/>
+    <Logger name="org.douglm.piSpi" level="info"/>
+
+    <Root level ="debug" >
+      <AppenderRef ref="FILE"/>
+      <AppenderRef ref="CONSOLE"/>
+    </Root>
+  </Loggers>
+</Configuration>

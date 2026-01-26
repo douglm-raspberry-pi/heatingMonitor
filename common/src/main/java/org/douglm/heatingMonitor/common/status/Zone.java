@@ -5,6 +5,9 @@ package org.douglm.heatingMonitor.common.status;
 
 import org.bedework.base.ToString;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.douglm.heatingMonitor.common.config.SubZoneConfig;
 import org.douglm.heatingMonitor.common.config.ZoneConfig;
 
@@ -20,6 +23,7 @@ import java.util.Map;
  */
 public class Zone implements SwitchedEntity {
   private final String name;
+  @JsonIgnore
   private final ZoneConfig config;
   private Input circulator;
   private boolean circulatorOn;
@@ -27,13 +31,22 @@ public class Zone implements SwitchedEntity {
   private boolean wasChecked;
   private final Map<String, Temperature> temps = new HashMap<>();
   private final Map<String, Zone> subZones = new HashMap<>();
+  @JsonIgnore
   private final List<Input> inputs = new ArrayList<>();
 
   private long lastChange;
   private long runningTime;
 
+  @JsonCreator
+  public Zone(@JsonProperty("name") final String name) {
+    this.name = name;
+    config = null;
+  }
+
   public Zone(final ZoneConfig config) {
     this.config = config;
+    this.lastChange = System.currentTimeMillis();
+
     this.name = config.getName();
     if (config.getOutTempName() != null) {
       putTemp(new Temperature(config.getOutTempName()));
@@ -47,7 +60,6 @@ public class Zone implements SwitchedEntity {
         addSubZone(new Zone(szc));
       }
     }
-    this.lastChange = System.currentTimeMillis();
   }
 
   private Zone(final SubZoneConfig config) {
@@ -86,6 +98,7 @@ public class Zone implements SwitchedEntity {
    *
    * @return input which monitors the actual circulator state
    */
+  @JsonIgnore
   public Input getCirculator() {
     return circulator;
   }

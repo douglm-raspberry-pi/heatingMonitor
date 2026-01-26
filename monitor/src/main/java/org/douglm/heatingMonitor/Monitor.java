@@ -10,6 +10,7 @@ import org.bedework.util.logging.Logged;
 import com.pi4j.Pi4J;
 import com.pi4j.context.Context;
 import org.douglm.heatingMonitor.common.MonitorException;
+import org.douglm.heatingMonitor.common.MonitorWebServiceClient;
 import org.douglm.heatingMonitor.common.config.MonitorConfig;
 import org.douglm.heatingMonitor.common.status.Input;
 import org.douglm.heatingMonitor.common.status.MonitorStatus;
@@ -88,6 +89,14 @@ public class Monitor implements Logged {
       inputs.join();
     } catch (final InterruptedException ignored) {
     }
+  }
+
+  public MonitorStatus getStatus() {
+    return status;
+  }
+
+  public MonitorWebServiceClient getWebClient() {
+    return webClient;
   }
 
   private GetEntityResponse<MonitorStatus> fromConfig() {

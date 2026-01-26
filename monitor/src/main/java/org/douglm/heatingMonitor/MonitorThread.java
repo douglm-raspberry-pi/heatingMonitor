@@ -82,7 +82,6 @@ public class MonitorThread extends AbstractProcessorThread {
 
   private void updateZone(final Zone zone) {
     // Check the inputs for this zone
-    final var circulator = zone.getCirculator();
     final var inputs = zone.getInputs();
 
     /* If any input is on we expect the circulator to be on.

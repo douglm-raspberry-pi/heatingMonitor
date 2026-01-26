@@ -5,6 +5,7 @@ package org.douglm.heatingMonitor.common.status;
 
 import org.bedework.base.ToString;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.douglm.heatingMonitor.common.config.MonitorConfig;
 
 import java.util.Collection;
@@ -16,13 +17,20 @@ import java.util.Map;
  * User: mike Date: 4/6/25 Time: 13:27
  */
 public class MonitorStatus {
+  @JsonIgnore
   private final MonitorConfig config;
   private final long startTime =  System.currentTimeMillis();
 
   private final Map<String, Zone> zones = new HashMap<>();
+  @JsonIgnore
   private final Map<String, Input> inputs = new HashMap<>();
 
   private int alwaysOnErrors;
+
+  // Needed for json
+  public MonitorStatus() {
+    config = null;
+  }
 
   public MonitorStatus(final MonitorConfig config) {
     this.config = config;
@@ -48,6 +56,16 @@ public class MonitorStatus {
     return zones.values();
   }
 
+  public void setZones(final Collection<Zone> val) {
+    zones.clear();
+    if (val != null) {
+      for (final var zone: val) {
+        zones.put(zone.getName(), zone);
+      }
+    }
+  }
+
+  @JsonIgnore
   public Input getInput(final String name) {
     return inputs.get(name);
   }
@@ -56,6 +74,7 @@ public class MonitorStatus {
     return inputs.put(input.getName(), input);
   }
 
+  @JsonIgnore
   public Collection<Input> getInputs() {
     return inputs.values();
   }

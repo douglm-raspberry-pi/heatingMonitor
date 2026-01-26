@@ -20,5 +20,6 @@
     <module>monitor</module>
     <module>web-service</module>
     <module>common</module>
+    <module>web-service-tester</module>
   </modules>
 </project>

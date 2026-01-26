@@ -1,5 +1,7 @@
 package org.douglm.heatingMonitor.common.status;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * User: mike Date: 4/6/25 Time: 23:32
  */
@@ -24,10 +26,12 @@ public interface SwitchedEntity {
     setLastChange(now);
   }
 
+  @JsonIgnore
   default long getRunningTimeMinutes() {
     return getRunningTime() / 60000;
   }
 
+  @JsonIgnore
   default int getRunningTimePercent(final long start) {
     final var sinceStart =
             System.currentTimeMillis() - start;

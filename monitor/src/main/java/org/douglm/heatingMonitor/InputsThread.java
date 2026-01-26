@@ -6,6 +6,7 @@ package org.douglm.heatingMonitor;
 import org.bedework.util.misc.AbstractProcessorThread;
 
 import com.pi4j.context.Context;
+import org.douglm.heatingMonitor.common.MonitorWebServiceClient;
 import org.douglm.heatingMonitor.common.status.MonitorStatus;
 import org.douglm.heatingMonitor.config.HardwareConfig;
 import org.douglm.piSpi.PiSpi8AIChannelConfig;
