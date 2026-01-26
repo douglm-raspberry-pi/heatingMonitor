@@ -3,6 +3,8 @@
 */
 package org.douglm.heatingMonitor.common.status;
 
+import org.bedework.base.ToString;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -29,5 +31,14 @@ public class Temperature {
 
   public void setDegreesCelsius(final double val) {
     degreesCelsius = val;
+  }
+
+  public ToString toStringSegment(final ToString ts) {
+    return ts.append("name", getName())
+             .append("degreesCelsius", getDegreesCelsius());
+  }
+
+  public String toString() {
+    return toStringSegment(new ToString(this)).toString();
   }
 }
