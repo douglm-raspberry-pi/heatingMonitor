@@ -126,7 +126,7 @@ public class MonitorThread extends AbstractProcessorThread {
           zone.setLastChange(System.currentTimeMillis());
         }
       }
-    } else if (zone.wasChecked()) {
+    } else if (zone.getWasChecked()) {
         warn("Mismatch for {}: current: {}, expected: {}",
              zone.getConfig().getName(),
              currentState, expectOn);

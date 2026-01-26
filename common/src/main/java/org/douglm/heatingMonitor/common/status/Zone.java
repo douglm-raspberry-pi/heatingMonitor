@@ -12,6 +12,7 @@ import org.douglm.heatingMonitor.common.config.SubZoneConfig;
 import org.douglm.heatingMonitor.common.config.ZoneConfig;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -162,7 +163,7 @@ public class Zone implements SwitchedEntity {
     inputChanged = true;
   }
 
-  public boolean wasChecked() {
+  public boolean getWasChecked() {
     return wasChecked;
   }
 
@@ -182,11 +183,29 @@ public class Zone implements SwitchedEntity {
     return subZones.get(name);
   }
 
+  public Collection<Zone> getSubZones() {
+    return subZones.values();
+  }
+
+  public void setSubZones(final Collection<Zone> val) {
+    subZones.clear();
+    if (val != null) {
+      for (final var zone: val) {
+        subZones.put(zone.getName(), zone);
+      }
+    }
+  }
+
   public ToString toStringSegment(final ToString ts) {
-    return ts.append("config", config)
+    return ts.append("name", getName())
+             .append("config", config)
              .append("lastChange", lastChange)
              .append("runningTime", runningTime)
              .append("circulator", circulator)
+             .append("circulatorOn", isCirculatorOn())
+             .append("inputChanged", getInputChanged())
+             .append("wasChecked", getWasChecked())
+             .append("subZones", getSubZones())
              .append("inputs", inputs);
   }
 
