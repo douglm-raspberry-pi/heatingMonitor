@@ -120,8 +120,17 @@ public class Zone implements SwitchedEntity {
     circulatorOn = val;
   }
 
-  public Map<String, Temperature> getTemps() {
-    return temps;
+  public Collection<Temperature> getTemps() {
+    return temps.values();
+  }
+
+  public void setTemps(final Collection<Temperature> val) {
+    temps.clear();
+    if (val != null) {
+      for (final var temp: val) {
+        temps.put(temp.getName(), temp);
+      }
+    }
   }
 
   public void putTemp(final Temperature val) {
@@ -135,7 +144,7 @@ public class Zone implements SwitchedEntity {
     }
 
     for (final var sz: subZones.values()) {
-      final var szTemp = sz.getTemps().get(name);
+      final var szTemp = sz.findTemp(name);
       if (szTemp != null) {
         return szTemp;
       }
@@ -205,6 +214,7 @@ public class Zone implements SwitchedEntity {
              .append("circulatorOn", isCirculatorOn())
              .append("inputChanged", getInputChanged())
              .append("wasChecked", getWasChecked())
+             .append("temps", getTemps())
              .append("subZones", getSubZones())
              .append("inputs", inputs);
   }
