@@ -91,6 +91,11 @@ public class Zone implements SwitchedEntity {
   }
 
   @Override
+  public void setRunningTime(final long val) {
+    runningTime = val;
+  }
+
+  @Override
   public void incRunningTime(final long val) {
     runningTime += val;
   }

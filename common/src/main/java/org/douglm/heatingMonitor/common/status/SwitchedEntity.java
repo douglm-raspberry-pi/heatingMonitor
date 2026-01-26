@@ -18,6 +18,12 @@ public interface SwitchedEntity {
 
   long getRunningTime();
 
+  /** For json.
+   *
+   * @param val running time in millis
+   */
+  void setRunningTime(long val);
+
   void incRunningTime(long val);
 
   default void updateRunningTime() {
