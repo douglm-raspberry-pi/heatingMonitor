@@ -27,7 +27,7 @@ public class MonitorStatus {
   @JsonIgnore
   private final Map<String, Input> inputs = new HashMap<>();
 
-  private final List<SwitchedEntity> sensors = new ArrayList<>();
+  private final List<Input> sensors = new ArrayList<>();
 
   private int alwaysOnErrors;
 
@@ -83,16 +83,16 @@ public class MonitorStatus {
     return inputs.values();
   }
 
-  public void setSensors(final List<SwitchedEntity> val) {
+  public void setSensors(final List<Input> val) {
     sensors.clear();
     sensors.addAll(val);
   }
 
-  public List<SwitchedEntity> getSensors() {
+  public List<Input> getSensors() {
     return sensors;
   }
 
-  public void addSensor(final SwitchedEntity val) {
+  public void addSensor(final Input val) {
     sensors.add(val);
   }
 
