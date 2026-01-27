@@ -145,7 +145,9 @@ public class Monitor implements Logged {
                                       ic);
         }
 
-        if (zone != null) {
+        if (zone == null) {
+          status.addSensor(input);
+        } else {
           if (ic.isCirculator()) {
             zone.setCirculator(input);
           } else if (ic.isSubZone()) {
