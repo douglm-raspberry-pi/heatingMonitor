@@ -10,27 +10,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * User: mike Date: 4/6/25 Time: 13:38
  */
-public class Input implements SwitchedEntity {
-  private final String name;
-
+public class Input extends BasicSwitchedEntity {
   private final Zone zone;
-
-  private long lastChange;
-  private long runningTime;
-
-  private boolean lastStatus;
 
   // true if lastStatus needs flipping
   private boolean changed;
 
   public Input(final String name,
                final Zone zone) {
-    this.name = name;
+    super(name);
     this.zone = zone;
-  }
-
-  public String getName() {
-    return name;
   }
 
   @JsonIgnore
@@ -38,45 +27,8 @@ public class Input implements SwitchedEntity {
     return zone;
   }
 
-  @Override
-  public long getLastChange() {
-    return lastChange;
-  }
-
-  @Override
-  public void setLastChange(final long val) {
-    lastChange = val;
-  }
-
-  @Override
-  public long getRunningTime() {
-    return runningTime;
-  }
-
-  @Override
-  public void setRunningTime(final long val) {
-    runningTime = val;
-  }
-
-  @Override
-  public void incRunningTime(final long val) {
-    runningTime += val;
-  }
-
-  /**
-   *
-   * @return status last time monitor checked.
-   */
-  public boolean getLastStatus() {
-    return lastStatus;
-  }
-
-  public void setLastStatus(final boolean val) {
-    lastStatus = val;
-  }
-
   public void currentStatus(final boolean val) {
-    changed = val != lastStatus;
+    changed = val != getSwitchValue();
   }
 
   public boolean testAndSetChanged() {
@@ -84,10 +36,10 @@ public class Input implements SwitchedEntity {
       return false;
     }
 
-    lastStatus = !lastStatus;
+    setSwitchValue(!getSwitchValue());
     changed = false;
 
-    if (!lastStatus) {
+    if (!getSwitchValue()) {
       // Turned off - update running time
       updateRunningTime();
     } else {
@@ -101,15 +53,17 @@ public class Input implements SwitchedEntity {
     return changed;
   }
 
-  public ToString toStringSegment(final ToString ts) {
-    return ts.append("name", getName())
-             .append("zone", getZone())
-             .append("lastChange", getLastChange())
-             .append("runningTime", getRunningTime())
-             .append("lastStatus", getLastStatus());
+  public SwitchedEntity toSwitchedEntity() {
+    final var res = new BasicSwitchedEntity(getName());
+    res.setLastChange(getLastChange());
+    res.setRunningTime(getRunningTime());
+    res.setSwitchValue(getSwitchValue());
+
+    return res;
   }
 
-  public String toString() {
-    return toStringSegment(new ToString(this)).toString();
+  public ToString toStringSegment(final ToString ts) {
+    return super.toStringSegment(ts)
+                .append("zone", getZone());
   }
 }

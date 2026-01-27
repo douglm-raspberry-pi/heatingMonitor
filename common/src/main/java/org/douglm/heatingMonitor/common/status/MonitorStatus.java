@@ -8,8 +8,10 @@ import org.bedework.base.ToString;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.douglm.heatingMonitor.common.config.MonitorConfig;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /** Maintains current status of heating.
@@ -24,6 +26,8 @@ public class MonitorStatus {
   private final Map<String, Zone> zones = new HashMap<>();
   @JsonIgnore
   private final Map<String, Input> inputs = new HashMap<>();
+
+  private final List<SwitchedEntity> sensors = new ArrayList<>();
 
   private int alwaysOnErrors;
 
@@ -79,6 +83,19 @@ public class MonitorStatus {
     return inputs.values();
   }
 
+  public void setSensors(final List<SwitchedEntity> val) {
+    sensors.clear();
+    sensors.addAll(val);
+  }
+
+  public List<SwitchedEntity> getSensors() {
+    return sensors;
+  }
+
+  public void addSensor(final SwitchedEntity val) {
+    sensors.add(val);
+  }
+
   public int getAlwaysOnErrors() {
     return alwaysOnErrors;
   }
@@ -103,6 +120,7 @@ public class MonitorStatus {
             .append("startTime", getStartTime())
             .append("zones", getZones())
             .append("alwaysOnErrors", getAlwaysOnErrors())
+            .append("sensors", getSensors())
             .toString();
   }
 }

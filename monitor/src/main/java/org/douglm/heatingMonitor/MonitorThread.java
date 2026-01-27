@@ -54,7 +54,7 @@ public class MonitorThread extends AbstractProcessorThread {
             }
 
             debug("Input " + input.getName() +
-                    " changed to " + input.getLastStatus());
+                    " changed to " + input.getSwitchValue());
           }
         }
 
@@ -95,14 +95,14 @@ public class MonitorThread extends AbstractProcessorThread {
        circulator state.
      */
 
-    final var currentState = zone.getCirculator().getLastStatus();
+    final var currentState = zone.getCirculator().getSwitchValue();
 
     var expectOn = false;
     if (inputs.isEmpty()) {
       expectOn = currentState;
     } else {
       for (final Input input: inputs) {
-        if (input.getLastStatus()) {
+        if (input.getSwitchValue()) {
           expectOn = true;
           break;
         }

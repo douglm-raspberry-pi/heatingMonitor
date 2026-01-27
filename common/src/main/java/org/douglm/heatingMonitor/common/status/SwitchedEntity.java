@@ -26,6 +26,14 @@ public interface SwitchedEntity {
 
   void incRunningTime(long val);
 
+  /**
+   *
+   * @return status last time monitor checked.
+   */
+  boolean getSwitchValue();
+
+  void setSwitchValue(boolean val);
+
   default void updateRunningTime() {
     final var now = System.currentTimeMillis();
     incRunningTime(now - getLastChange());

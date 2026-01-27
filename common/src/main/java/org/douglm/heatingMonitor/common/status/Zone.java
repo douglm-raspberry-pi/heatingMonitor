@@ -22,8 +22,7 @@ import java.util.Map;
  * <br/>
  * User: mike Date: 4/5/25 Time: 22:45
  */
-public class Zone implements SwitchedEntity {
-  private final String name;
+public class Zone extends BasicSwitchedEntity {
   @JsonIgnore
   private final ZoneConfig config;
   private Input circulator;
@@ -35,20 +34,17 @@ public class Zone implements SwitchedEntity {
   @JsonIgnore
   private final List<Input> inputs = new ArrayList<>();
 
-  private long lastChange;
-  private long runningTime;
-
   @JsonCreator
   public Zone(@JsonProperty("name") final String name) {
-    this.name = name;
+    super(name);
     config = null;
   }
 
   public Zone(final ZoneConfig config) {
+    super(config.getName());
     this.config = config;
-    this.lastChange = System.currentTimeMillis();
+    setLastChange(System.currentTimeMillis());
 
-    this.name = config.getName();
     if (config.getOutTempName() != null) {
       putTemp(new Temperature(config.getOutTempName()));
     }
@@ -67,37 +63,8 @@ public class Zone implements SwitchedEntity {
     this((ZoneConfig)config);
   }
 
-  public String getName() {
-    return name;
-  }
-
   public ZoneConfig getConfig() {
     return config;
-  }
-
-  @Override
-  public long getLastChange() {
-    return lastChange;
-  }
-
-  @Override
-  public void setLastChange(final long val) {
-    lastChange = val;
-  }
-
-  @Override
-  public long getRunningTime() {
-    return runningTime;
-  }
-
-  @Override
-  public void setRunningTime(final long val) {
-    runningTime = val;
-  }
-
-  @Override
-  public void incRunningTime(final long val) {
-    runningTime += val;
   }
 
   /**
@@ -210,18 +177,25 @@ public class Zone implements SwitchedEntity {
     }
   }
 
+  public SwitchedEntity toSwitchedEntity() {
+    final var res = new BasicSwitchedEntity(getName());
+    res.setLastChange(getLastChange());
+    res.setRunningTime(getRunningTime());
+    res.setSwitchValue(getSwitchValue());
+
+    return res;
+  }
+
   public ToString toStringSegment(final ToString ts) {
-    return ts.append("name", getName())
-             .append("config", config)
-             .append("lastChange", lastChange)
-             .append("runningTime", runningTime)
-             .append("circulator", circulator)
-             .append("circulatorOn", isCirculatorOn())
-             .append("inputChanged", getInputChanged())
-             .append("wasChecked", getWasChecked())
-             .append("temps", getTemps())
-             .append("subZones", getSubZones())
-             .append("inputs", inputs);
+    return super.toStringSegment(ts)
+                .append("config", config)
+                .append("circulator", circulator)
+                .append("circulatorOn", isCirculatorOn())
+                .append("inputChanged", getInputChanged())
+                .append("wasChecked", getWasChecked())
+                .append("temps", getTemps())
+                .append("subZones", getSubZones())
+                .append("inputs", inputs);
   }
 
   public String toString() {
