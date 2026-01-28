@@ -20,9 +20,9 @@
     </c:forEach>
     </temps>
   </c:if>
-  <c:if test="${not empty zone.subzones}">
+  <c:if test="${not empty zone.subZones}">
     <subzones>
-      <c:forEach var="z" items="${zone.subzones}">
+      <c:forEach var="z" items="${zone.subZones}">
         <c:set var="zone" value="${z}" scope="session" />
         <jsp:include page="/docs/emitZone.jsp" />
       </c:forEach>
