@@ -13,14 +13,16 @@ try {
     <startTime><c:out value="${status.startTime}"/></startTime>
     <c:if test="${not empty status.zones}">
       <zones>
-      <c:forEach var="zone" items="${status.zones}">
+      <c:forEach var="z" items="${status.zones}">
+        <c:set var="zone" value="${z}" scope="session" />
         <jsp:include page="/docs/emitZone.jsp" />
       </c:forEach>
       </zones>
     </c:if>
     <c:if test="${not empty status.sensors}">
       <sensors>
-      <c:forEach var="sensor" items="${status.sensors}">
+      <c:forEach var="s" items="${status.sensors}">
+        <c:set var="sensor" value="${s}" scope="session" />
         <jsp:include page="/docs/emitSensor.jsp" />
       </c:forEach>
       </sensors>
