@@ -33,6 +33,21 @@
       <param-value>true</param-value>
     </init-param>
 
+    <init-param>
+      <param-name>appRoot</param-name>
+      <param-value>http://localhost:8080/approots/hsmonws</param-value>
+    </init-param>
+
+    <init-param>
+      <param-name>browserResourceRoot</param-name>
+      <param-value>/approots/hsmonws</param-value>
+    </init-param>
+
+    <init-param>
+      <param-name>skinName</param-name>
+      <param-value>hsmon</param-value>
+    </init-param>
+
     <load-on-startup>1</load-on-startup>
   </servlet>
 

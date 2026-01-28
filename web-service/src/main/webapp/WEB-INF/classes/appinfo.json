@@ -11,7 +11,24 @@
     {
       "name": "allstatus",
       "className": "org.douglm.heatingMonitor.web.gethelpers.ProcessGetAllStatus"
-    }
+    },
+    {
+      "name": "view",
+      "className": "org.douglm.heatingMonitor.web.gethelpers.ProcessView",
+      "parameters": [
+        {"name": "xsl",
+          "value":  "true"
+        },
+        {"name": "skinName",
+          "value":  "view"
+        }
+      ],
+      "forwards": [
+        {
+          "name": "success",
+          "path": "/docs/status.jsp"
+        }
+      ]    }
   ],
 
   "methodHelpers": [
@@ -20,13 +37,7 @@
       "helpers": [
         {
           "name": "postStatus",
-          "className": "org.douglm.heatingMonitor.web.posthelpers.ProcessPostStatus",
-          "forwards": [
-            {
-              "name": "success",
-              "path": "/docs/eventreg.jsp"
-            }
-          ]
+          "className": "org.douglm.heatingMonitor.web.posthelpers.ProcessPostStatus"
         }
       ]
     }

@@ -7,6 +7,8 @@ import org.bedework.util.logging.BwLogger;
 import org.bedework.util.logging.Logged;
 import org.bedework.util.servlet.HttpServletUtils;
 
+import org.douglm.heatingMonitor.common.status.MonitorStatus;
+
 import java.io.Serializable;
 
 /**
@@ -26,6 +28,8 @@ public class WebGlobals implements Logged, Serializable {
   private String href;
 
   private String message;
+
+  private MonitorStatus status;
 
   public void reset(final Request req) {
     if (getCurrentUser() == null) {
@@ -88,6 +92,14 @@ public class WebGlobals implements Logged, Serializable {
 
   public String getMessage() {
     return message;
+  }
+
+  public void setStatus(final MonitorStatus val) {
+    status = val;
+  }
+
+  public MonitorStatus getStatus() {
+    return status;
   }
 
   /* ==============================================================

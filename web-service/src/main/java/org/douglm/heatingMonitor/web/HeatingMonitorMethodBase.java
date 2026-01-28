@@ -22,6 +22,7 @@ import org.bedework.util.misc.Util;
 import org.bedework.util.servlet.MethodBase;
 import org.bedework.util.servlet.ReqUtil;
 import org.bedework.util.servlet.config.AppInfo;
+import org.bedework.util.servlet.filters.PresentationState;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.douglm.heatingMonitor.common.MonitorException;
@@ -95,6 +96,21 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
     final var href = rutil.getReqPar("href");
     if (href != null) {
       webGlobals.setHref(href);
+    }
+
+    final var ps = getPresentationState();
+
+    if (ps.getAppRoot() == null) {
+      ps.setAppRoot(getContext().getInitParameter("appRoot"));
+      ps.setBrowserResourceRoot(getContext().getInitParameter("browserResourceRoot"));
+
+      // Set the default skin
+
+      if (ps.getSkinName() == null) {
+        // No skin name supplied - use the default
+        ps.setSkinName(getContext().getInitParameter("skinName"));
+        ps.setSkinNameSticky(true);
+      }
     }
 
     return true;
@@ -235,6 +251,30 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
     if (debug()) {
       debug("Statuses contains {} values", statuses.size());
     }
+  }
+
+  /* ========================================================
+   *               Presentation state methods
+   * ======================================================== */
+
+  /**
+   * @return PresentationState
+   */
+  public PresentationState getPresentationState() {
+    final String attrName = PresentationState.presentationAttrName;
+
+    final Object o = getRequest().getRequestAttr(attrName);
+    final PresentationState ps;
+
+    if (!(o instanceof PresentationState)) {
+      ps = new PresentationState().reinit(getRequest().getRequest());
+    } else {
+      ps = (PresentationState)o;
+    }
+
+    getRequest().setRequestAttr(attrName, ps);
+
+    return  ps;
   }
 }
 
