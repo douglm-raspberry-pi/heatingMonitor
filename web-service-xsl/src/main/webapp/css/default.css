@@ -1,0 +1,76 @@
+/*
+   Licensed to Jasig under one or more contributor license
+   agreements. See the NOTICE file distributed with this work
+   for additional information regarding copyright ownership.
+   Jasig licenses this file to you under the Apache License,
+   Version 2.0 (the "License"); you may not use this file
+   except in compliance with the License. You may obtain a
+   copy of the License at:
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on
+   an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied. See the License for the
+   specific language governing permissions and limitations
+   under the License.
+*/
+
+body {
+    background-color: white;
+    color: #000000;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    min-width: 680px;
+}
+#hwmon {
+    display: grid;
+    grid-template-areas:
+    "header "
+    "statusBar "
+    "menu1"
+    "menu2"
+    "content"
+    "footer ";
+    gap: 0px;
+    min-width: 800px;
+}
+#header {
+    grid-area: header;
+    color: #eee;
+    background-color : #333;
+    margin: 0;
+    padding: 0.5em 1em 0.75em 1em;
+}
+#statusBar {
+    grid-area: statusBar;
+    clear: both;
+    margin: 0;
+    color: #eee;
+    background-color: #5c7486;
+    font-size: 0.9em;
+    border-bottom: 1px solid #999;
+    padding: 0.5em 1em;
+    white-space: nowrap;
+}
+/* Menu items */
+#menu1 {
+    grid-area: menu1;
+    margin: 0;
+    color: #eee;
+    background-color: #ddd;
+}
+#menu2 {
+    grid-area: menu2;
+    margin: 0;
+    color: #eee;
+    background-color: #ddd;
+}
+#content {
+    grid-area: content;
+    margin: 0;
+    padding: 2px 2px;
+}

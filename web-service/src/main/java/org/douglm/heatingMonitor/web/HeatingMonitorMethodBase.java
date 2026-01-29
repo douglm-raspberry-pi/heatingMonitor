@@ -133,6 +133,24 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
         return;
       }
 
+      final var hinfo = helper.getHelperInfo();
+      final var xslPar = hinfo.getParameter("xsl");
+      final var doXsl = ((xslPar != null) &&
+                                 ("true".equals(xslPar.getValue())));
+      final var snPar = hinfo.getParameter("skinName");
+      final String skinName;
+      if (snPar != null) {
+        skinName = snPar.getValue();
+      } else {
+        skinName = null;
+      }
+
+      final var ps = getPresentationState();
+      ps.setNoXSLT(!doXsl);
+      if (skinName != null) {
+        ps.setSkinName(skinName);
+      }
+
       debug("About to call helper execute method");
       helper.execute(resourceUri, req, resp, this);
     } catch (final ServletException se) {

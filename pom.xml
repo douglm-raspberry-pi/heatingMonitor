@@ -21,5 +21,6 @@
     <module>web-service</module>
     <module>common</module>
     <module>web-service-tester</module>
+    <module>web-service-xsl</module>
   </modules>
 </project>

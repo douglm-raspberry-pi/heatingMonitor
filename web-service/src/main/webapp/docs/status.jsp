@@ -7,6 +7,7 @@
       <%
 try {
 %>
+  <page>status</page>
   <c:set var="status" value="${globals.status}" />
   <c:if test="${not empty status}">
   <status>

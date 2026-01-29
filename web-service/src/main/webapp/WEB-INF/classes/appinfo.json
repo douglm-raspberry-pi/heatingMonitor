@@ -13,14 +13,11 @@
       "className": "org.douglm.heatingMonitor.web.gethelpers.ProcessGetAllStatus"
     },
     {
-      "name": "view",
+      "name": "view.rdo",
       "className": "org.douglm.heatingMonitor.web.gethelpers.ProcessView",
       "parameters": [
         {"name": "xsl",
           "value":  "true"
-        },
-        {"name": "skinName",
-          "value":  "view"
         }
       ],
       "forwards": [
