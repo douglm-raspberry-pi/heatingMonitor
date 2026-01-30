@@ -99,6 +99,7 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
     }
 
     final var ps = getPresentationState();
+    ps.reinit(req);
 
     if (ps.getAppRoot() == null) {
       ps.setAppRoot(getContext().getInitParameter("appRoot"));
