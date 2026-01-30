@@ -21,13 +21,15 @@ package org.douglm.heatingMonitor.web;
 import org.bedework.util.jmx.ConfBase;
 import org.bedework.util.servlet.MethodBase;
 import org.bedework.util.servlet.ServletBase;
+import org.bedework.util.servlet.io.PooledBuffers;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 
 import static org.bedework.util.servlet.MethodBase.MethodInfo;
 
-/** This servlet handles the categories reuests and respondes.
+/** This servlet handles the heating monitor web service
+ *  requests and responses.
  *
  * @author Mike Douglass   bedework.com
  * @version 1.0
@@ -79,6 +81,8 @@ public class HeatingMonitorServlet extends ServletBase {
 
   @Override
   protected ConfBase<?> getConfigurator() {
+    new PooledBuffers();
+
     return null;
   }
 }
