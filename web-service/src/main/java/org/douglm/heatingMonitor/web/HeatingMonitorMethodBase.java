@@ -20,6 +20,7 @@ package org.douglm.heatingMonitor.web;
 
 import org.bedework.util.misc.Util;
 import org.bedework.util.servlet.MethodBase;
+import org.bedework.util.servlet.MethodHelper;
 import org.bedework.util.servlet.ReqUtil;
 import org.bedework.util.servlet.config.AppInfo;
 import org.bedework.util.servlet.filters.PresentationState;
@@ -99,6 +100,29 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
     }
 
     final var ps = getPresentationState();
+    final MethodHelper helper;
+    try {
+      helper = getMethodHelper(req, resp);
+    } catch (final ServletException unused) {
+      return false;
+    }
+    final var hinfo = helper.getHelperInfo();
+    final var xslPar = hinfo.getParameter("xsl");
+    final var doXsl = ((xslPar != null) &&
+                               ("true".equals(xslPar.getValue())));
+    final var snPar = hinfo.getParameter("skinName");
+    final String skinName;
+    if (snPar != null) {
+      skinName = snPar.getValue();
+    } else {
+      skinName = null;
+    }
+
+    ps.setNoXSLT(!doXsl);
+    if (skinName != null) {
+      ps.setSkinName(skinName);
+    }
+
     ps.reinit(req);
 
     if (ps.getAppRoot() == null) {
@@ -121,35 +145,11 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
   public void doMethod(final HttpServletRequest req,
                        final HttpServletResponse resp) throws ServletException {
     try {
+      final var helper = getMethodHelper(req, resp);
       final List<String> resourceUri = getResourceUri(req);
 
       if (Util.isEmpty(resourceUri)) {
         throw new ServletException("Bad resource url - no path specified");
-      }
-
-      final String resName = resourceUri.getFirst();
-      final var helper = getMethodHelper(resName);
-      if (helper == null) {
-        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return;
-      }
-
-      final var hinfo = helper.getHelperInfo();
-      final var xslPar = hinfo.getParameter("xsl");
-      final var doXsl = ((xslPar != null) &&
-                                 ("true".equals(xslPar.getValue())));
-      final var snPar = hinfo.getParameter("skinName");
-      final String skinName;
-      if (snPar != null) {
-        skinName = snPar.getValue();
-      } else {
-        skinName = null;
-      }
-
-      final var ps = getPresentationState();
-      ps.setNoXSLT(!doXsl);
-      if (skinName != null) {
-        ps.setSkinName(skinName);
       }
 
       debug("About to call helper execute method");
