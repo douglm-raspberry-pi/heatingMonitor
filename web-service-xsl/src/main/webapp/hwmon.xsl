@@ -29,7 +29,7 @@
 
   <!--==== MAIN TEMPLATE  ====-->
   <xsl:template match="/">
-    <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html></xsl:text><!-- HTML5 -->
+    <!-- <xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html></xsl:text>HTML5 -->
     <html lang="en">
       <xsl:call-template name="head"/>
       <body>
