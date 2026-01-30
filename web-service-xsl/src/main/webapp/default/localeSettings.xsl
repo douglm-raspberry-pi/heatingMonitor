@@ -49,56 +49,5 @@
       });
       </xsl:comment>
     </script>
-    
   </xsl:template>
-  
-  <!-- Declare the JavaScript event strings. -->
-  <!-- These are for display and can be translated. -->
-  <xsl:template name="bedeworkEventJsStrings">
-    <script type="text/javascript">
-      // Scheduling strings
-			var bwAttendeeDispRoleChair = "chair";
-			var bwAttendeeDispRoleRequired = "required participant";
-			var bwAttendeeDispRoleOptional = "optional participant";
-			var bwAttendeeDispRoleNonParticipant = "non-participant";
-			var bwAttendeeDispStatusNeedsAction = "needs action";
-			var bwAttendeeDispStatusAccepted = "accepted";
-			var bwAttendeeDispStatusDeclined = "declined";
-			var bwAttendeeDispStatusTentative = "tentative";
-			var bwAttendeeDispStatusDelegated = "delegated";
-			var bwAttendeeDispStatusCompleted = "completed";
-			var bwAttendeeDispStatusInProcess = "in-process";
-			var bwAttendeeDispTypePerson = "person";
-			var bwAttendeeDispTypeLocation = "location";
-			var bwAttendeeDispTypeResource = "resource";
-      
-      var bwAttendeeDispGridAllAttendees = "All Attendees";
-			
-			var bwFreeBusyDispTypeBusy = "BUSY";
-			var bwFreeBusyDispTypeTentative = "TENTATIVE";
-			var bwAddAttendeeDisp = "add attendee...";
-			var bwAddDisp = "add";
-			var bwAttendeeExistsDisp = "attendee exists";
-			var bwAddAttendeeRoleDisp = "Role:";
-			var bwAddAttendeeTypeDisp = "Type:";
-			var bwAddAttendeeBookDisp = "Book:";
-			var bwEventSubmitMeetingDisp = "send";
-			var bwEventSubmitDisp = "save";
-			
-			var bwReqParticipantDisp = "required";
-			var bwOptParticipantDisp = "optional";
-			var bwChairDisp = "chair";
-			
-			var bwErrorAttendees = "Error: attendee not found";
-      
-      // recurrence strings
-      var bwRecurChangeWarning = "WARNING: changing your recurrence rules\nwill destroy all existing recurrence overrides\nand exceptions when you save the event.\n\nContinue?";
-    </script>
-  </xsl:template>
-  
-  <!-- Declare the access control strings. -->
-  <xsl:template name="bedeworkAccessStrings">
-    <!-- The XSL access strings are found in resources/xsl/lang and are referenced in default/globals.xsl-->
-  </xsl:template>
-  
 </xsl:stylesheet>
