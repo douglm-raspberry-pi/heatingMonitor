@@ -148,7 +148,7 @@ HSMON_DATA_DIR_DEF=-Dorg.hsmon.data.dir=$HSMON_DATA_DIR/
 # Configurations property file
 
 HSMON_CONF_DIR="$JBOSS_SERVER_DIR/configuration/hsmon"
-HSMON_CONF_DIR_DEF="-Dorg.hsmon.config.dir=$HSMON_CONF_DIR/"
+HSMON_CONF_DIR_DEF="-Dorg.bedework.config.dir=$HSMON_CONF_DIR/"
 
 # Opensearch home
 
