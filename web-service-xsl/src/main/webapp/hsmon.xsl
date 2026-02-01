@@ -39,6 +39,7 @@
           <xsl:call-template name="menu1"/>
           <div id="content">
             <h1><xsl:value-of select="$curPage"/></h1>
+            <h2>resourcesRoot: <xsl:value-of select="$resourcesRoot"/></h2>
             <xsl:choose>
               <xsl:when test="$curPage='status'">
                 <xsl:call-template name="status"/>
