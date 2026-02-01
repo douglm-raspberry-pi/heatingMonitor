@@ -18,6 +18,7 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         version="3.0">
 
-  <xsl:variable static="yes" name="hsmon-PageTitle">Heating Monitor Report</xsl:variable>
+  <xsl:variable static="yes" name="hsmon-PageTitle"
+                select="'Heating Monitor Report'"/>
 
 </xsl:stylesheet>
