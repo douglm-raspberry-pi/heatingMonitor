@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Licensed to Jasig under one or more contributor license
-    agreements. See the NOTICE file distributed with this work
-    for additional information regarding copyright ownership.
-    Jasig licenses this file to you under the Apache License,
+    This file is licensed under the Apache License,
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
@@ -21,6 +18,8 @@
         version="3.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xsl:include href="packageSettings.xsl" />
+
   <xsl:include href="head.xsl" />
   <xsl:include href="header.xsl" />
   <xsl:include href="menu.xsl" />
@@ -39,6 +38,7 @@
           <xsl:call-template name="menu1"/>
           <div id="content">
             <h1><xsl:value-of select="$curPage"/></h1>
+            <h2>resourcesRoot: <xsl:value-of select="$resourcesRoot"/></h2>
             <xsl:choose>
               <xsl:when test="$curPage='status'">
                 <xsl:call-template name="status"/>

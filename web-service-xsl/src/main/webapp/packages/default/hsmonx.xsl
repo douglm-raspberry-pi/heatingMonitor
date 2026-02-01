@@ -21,11 +21,34 @@
         version="3.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xsl:include href="packageSettings.xsl" />
 
-  <xsl:template name="status">
-    <h2>In status template</h2>
+  <xsl:include href="head.xsl" />
+  <xsl:include href="header.xsl" />
+  <xsl:include href="menu.xsl" />
+  <xsl:include href="status.xsl" />
+  <xsl:include href="zone.xsl" />
 
-    <xsl:apply-templates select="/hsmon/status/zones/zone"
-                         mode="zonesList"/>
+  <!--==== MAIN TEMPLATE  ====-->
+  <xsl:template match="/">
+    <html lang="en">
+      <xsl:call-template name="head"/>
+      <body>
+        <div id="hsmon"><!-- main wrapper div to keep styles
+        -->
+          <xsl:variable name="curPage" select="/hsmon/page"/>
+          <xsl:call-template name="header"/>
+          <xsl:call-template name="menu1"/>
+          <div id="content">
+            <h1><xsl:value-of select="$curPage"/></h1>
+            <xsl:choose>
+              <xsl:when test="$curPage='status'">
+                <xsl:call-template name="status"/>
+              </xsl:when>
+            </xsl:choose>
+          </div>
+        </div>
+      </body>
+    </html>
   </xsl:template>
 </xsl:stylesheet>

@@ -18,4 +18,8 @@
         version="3.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+  <!-- URL of html resources (images, css, other html) for the current theme.
+       This value is self-referential and should always match the directory name of the current theme.
+       Don't change this value unless you know what you're doing. -->
+  <xsl:variable static="yes" name="resourcesRoot"><xsl:value-of select="/hsmon/browserResourceRoot"/></xsl:variable>
 </xsl:stylesheet>
