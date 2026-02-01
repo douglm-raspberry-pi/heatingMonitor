@@ -36,6 +36,6 @@
 
   <!-- DEFAULT THEME NAME -->
   <!-- to change the default theme, change this include -->
-  <xsl:include href="../../hwmonx.xsl" />
+  <xsl:include href="../../hsmon.xsl" />
 
 </xsl:stylesheet>

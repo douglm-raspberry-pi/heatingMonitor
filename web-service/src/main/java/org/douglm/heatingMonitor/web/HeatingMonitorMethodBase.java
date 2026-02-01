@@ -99,6 +99,9 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
       webGlobals.setHref(href);
     }
 
+    final var context = getContext();
+    webGlobals.setBrowserResourceRoot(
+            context.getInitParameter("browserResourceRoot"));
     final var ps = getPresentationState();
     final MethodHelper helper;
     try {
@@ -126,14 +129,14 @@ public abstract class HeatingMonitorMethodBase extends MethodBase {
     ps.reinit(req);
 
     if (ps.getAppRoot() == null) {
-      ps.setAppRoot(getContext().getInitParameter("appRoot"));
-      ps.setBrowserResourceRoot(getContext().getInitParameter("browserResourceRoot"));
+      ps.setAppRoot(context.getInitParameter("appRoot"));
+      ps.setBrowserResourceRoot(context.getInitParameter("browserResourceRoot"));
 
       // Set the default skin
 
       if (ps.getSkinName() == null) {
         // No skin name supplied - use the default
-        ps.setSkinName(getContext().getInitParameter("skinName"));
+        ps.setSkinName(context.getInitParameter("skinName"));
         ps.setSkinNameSticky(true);
       }
     }

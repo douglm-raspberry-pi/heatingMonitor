@@ -31,6 +31,8 @@ public class WebGlobals implements Logged, Serializable {
 
   private MonitorStatus status;
 
+  private String browserResourceRoot;
+
   public void reset(final Request req) {
     if (getCurrentUser() == null) {
       currentUser = HttpServletUtils.remoteUser(req.getRequest());
@@ -92,6 +94,15 @@ public class WebGlobals implements Logged, Serializable {
 
   public String getMessage() {
     return message;
+  }
+
+  public void setBrowserResourceRoot(
+          final String val) {
+    browserResourceRoot = val;
+  }
+
+  public String getBrowserResourceRoot() {
+    return browserResourceRoot;
   }
 
   public void setStatus(final MonitorStatus val) {

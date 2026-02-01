@@ -22,6 +22,6 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xsl:variable name="hwmon-PageTitle">Heating Monitor Report</xsl:variable>
+  <xsl:variable name="hsmon-PageTitle">Heating Monitor Report</xsl:variable>
 
 </xsl:stylesheet>

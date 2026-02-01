@@ -25,7 +25,7 @@
   <!--==== Head Section ====-->
   <xsl:template name="head">
     <head>
-      <title><xsl:copy-of select="$hwmon-PageTitle"/></title>
+      <title><xsl:copy-of select="$hsmon-PageTitle"/></title>
       <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
       <link rel="stylesheet" href="{$resourcesRoot}/css/default.css"/>
     </head>

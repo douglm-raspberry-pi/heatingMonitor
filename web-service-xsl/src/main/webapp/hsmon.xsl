@@ -25,18 +25,20 @@
   <xsl:include href="header.xsl" />
   <xsl:include href="menu.xsl" />
   <xsl:include href="status.xsl" />
+  <xsl:include href="zone.xsl" />
 
   <!--==== MAIN TEMPLATE  ====-->
   <xsl:template match="/">
     <html lang="en">
       <xsl:call-template name="head"/>
       <body>
-        <div id="hwmon"><!-- main wrapper div to keep styles
+        <div id="hsmon"><!-- main wrapper div to keep styles
         -->
-          <xsl:variable name="curPage" select="hwmon/page"/>
+          <xsl:variable name="curPage" select="/hsmon/page"/>
           <xsl:call-template name="header"/>
           <xsl:call-template name="menu1"/>
           <div id="content">
+            <h1><xsl:value-of select="$curPage"/></h1>
             <xsl:choose>
               <xsl:when test="$curPage='status'">
                 <xsl:call-template name="status"/>

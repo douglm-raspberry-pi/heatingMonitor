@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Licensed to Jasig under one or more contributor license
-    agreements. See the NOTICE file distributed with this work
-    for additional information regarding copyright ownership.
-    Jasig licenses this file to you under the Apache License,
+    This file is licensed under the Apache License,
     Version 2.0 (the "License"); you may not use this file
     except in compliance with the License. You may obtain a
     copy of the License at:
@@ -22,10 +19,9 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xsl:template name="status">
-    <h2>In status template</h2>
-
-    <xsl:apply-templates select="/hsmon/status/zones/zone"
-                         mode="zonesList"/>
+  <xsl:template match="zone" mode="zonesList">
+    <div id="zone">
+      <xsl:value-of select="name"/>
+    </div>
   </xsl:template>
 </xsl:stylesheet>

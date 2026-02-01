@@ -26,7 +26,7 @@ body {
     font-size: 14px;
     min-width: 680px;
 }
-#hwmon {
+#hsmon {
     display: grid;
     grid-template-areas:
     "header "

@@ -5,6 +5,7 @@ try {
 %>
 
   <c:set var="globals" value="${sessionScope.globals}" />
+  <browserResourceRoot><c:out value="${globals.browserResourceRoot}"/></browserResourceRoot>
 <%
 } catch (Throwable t) {
   t.printStackTrace();
