@@ -57,17 +57,23 @@ body {
 #menu1 {
     grid-area: menu1;
     margin: 0;
-    color: #eee;
     background-color: #ddd;
 }
 #menu2 {
     grid-area: menu2;
     margin: 0;
-    color: #eee;
     background-color: #ddd;
 }
 #content {
     grid-area: content;
     margin: 0;
+    padding: 2px 2px;
+}
+#zone {
+    margin: 10px;
+    padding: 2px 2px;
+}
+#subzone {
+    margin: 20px;
     padding: 2px 2px;
 }

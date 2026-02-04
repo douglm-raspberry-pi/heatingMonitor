@@ -12,14 +12,6 @@ try {
   <c:if test="${not empty status}">
   <status>
     <startTime><c:out value="${status.startTime}"/></startTime>
-    <c:if test="${not empty status.zones}">
-      <zones>
-      <c:forEach var="z" items="${status.zones}">
-        <c:set var="zone" value="${z}" scope="session" />
-        <jsp:include page="/docs/emitZone.jsp" />
-      </c:forEach>
-      </zones>
-    </c:if>
     <c:if test="${not empty status.sensors}">
       <sensors>
       <c:forEach var="s" items="${status.sensors}">
@@ -27,6 +19,14 @@ try {
         <jsp:include page="/docs/emitSensor.jsp" />
       </c:forEach>
       </sensors>
+    </c:if>
+    <c:if test="${not empty status.heatSources}">
+      <heatSources>
+        <c:forEach var="hs" items="${status.heatSources}">
+          <c:set var="heatSource" value="${hs}" scope="session" />
+          <jsp:include page="/docs/emitHeatSource.jsp" />
+        </c:forEach>
+      </heatSources>
     </c:if>
   </status>
   </c:if>

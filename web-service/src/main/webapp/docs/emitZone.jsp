@@ -22,9 +22,9 @@
   </c:if>
   <c:if test="${not empty zone.subZones}">
     <subzones>
-      <c:forEach var="z" items="${zone.subZones}">
-        <c:set var="zone" value="${z}" scope="session" />
-        <jsp:include page="/docs/emitZone.jsp" />
+      <c:forEach var="sz" items="${zone.subZones}">
+        <c:set var="subzone" value="${sz}" scope="session" />
+        <jsp:include page="/docs/emitSubzone.jsp" />
       </c:forEach>
     </subzones>
   </c:if>

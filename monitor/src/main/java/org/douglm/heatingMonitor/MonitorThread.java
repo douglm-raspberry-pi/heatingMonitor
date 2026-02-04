@@ -59,9 +59,11 @@ public class MonitorThread extends AbstractProcessorThread {
         }
 
         // See if any zones need checking
-        for (final var zone: status.getZones()) {
-          if (zone.getInputChanged()) {
-            updateZone(zone);
+        for (final var hs: status.getHeatSources()) {
+          for (final var zone: hs.getZones()) {
+            if (zone.getInputChanged()) {
+              updateZone(zone);
+            }
           }
         }
 

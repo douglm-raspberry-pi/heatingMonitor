@@ -22,6 +22,7 @@
   <!--==== BANNER and MENU TABS  ====-->
   <xsl:template name="header">
     <div id="header">
+      <h1><xsl:copy-of select="$hsmon-PageTitle"/></h1>
     </div>
   </xsl:template>
 </xsl:stylesheet>

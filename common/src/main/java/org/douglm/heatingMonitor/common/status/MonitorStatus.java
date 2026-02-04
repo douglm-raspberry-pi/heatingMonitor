@@ -23,7 +23,7 @@ public class MonitorStatus {
   private final MonitorConfig config;
   private final long startTime =  System.currentTimeMillis();
 
-  private final Map<String, Zone> zones = new HashMap<>();
+  private final Map<String, HeatSource> heatSources = new HashMap<>();
   @JsonIgnore
   private final Map<String, Input> inputs = new HashMap<>();
 
@@ -48,23 +48,23 @@ public class MonitorStatus {
     return startTime;
   }
 
-  public Zone getZone(final String name) {
-    return zones.get(name);
+  public HeatSource getHeatSource(final String name) {
+    return heatSources.get(name);
   }
 
-  public Zone addZone(final Zone zone) {
-    return zones.put(zone.getConfig().getName(), zone);
+  public HeatSource addHeatSource(final HeatSource val) {
+    return heatSources.put(val.getConfig().getName(), val);
   }
 
-  public Collection<Zone> getZones() {
-    return zones.values();
+  public Collection<HeatSource> getHeatSources() {
+    return heatSources.values();
   }
 
-  public void setZones(final Collection<Zone> val) {
-    zones.clear();
+  public void setHeatSources(final Collection<HeatSource> val) {
+    heatSources.clear();
     if (val != null) {
-      for (final var zone: val) {
-        zones.put(zone.getName(), zone);
+      for (final var hs: val) {
+        heatSources.put(hs.getName(), hs);
       }
     }
   }
@@ -105,8 +105,8 @@ public class MonitorStatus {
   }
 
   public Temperature findTemp(final String name) {
-    for (final var zone: getZones()) {
-      final var temp = zone.findTemp(name);
+    for (final var hs: getHeatSources()) {
+      final var temp = hs.findTemp(name);
       if (temp != null) {
         return temp;
       }
@@ -118,7 +118,7 @@ public class MonitorStatus {
   public String toString() {
     return new ToString(this)
             .append("startTime", getStartTime())
-            .append("zones", getZones())
+            .append("heatSources", getHeatSources())
             .append("alwaysOnErrors", getAlwaysOnErrors())
             .append("sensors", getSensors())
             .toString();

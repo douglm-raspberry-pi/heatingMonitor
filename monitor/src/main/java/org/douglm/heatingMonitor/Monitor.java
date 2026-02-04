@@ -12,6 +12,7 @@ import com.pi4j.context.Context;
 import org.douglm.heatingMonitor.common.MonitorException;
 import org.douglm.heatingMonitor.common.MonitorWebServiceClient;
 import org.douglm.heatingMonitor.common.config.MonitorConfig;
+import org.douglm.heatingMonitor.common.status.HeatSource;
 import org.douglm.heatingMonitor.common.status.Input;
 import org.douglm.heatingMonitor.common.status.MonitorStatus;
 import org.douglm.heatingMonitor.common.status.Zone;
@@ -103,63 +104,68 @@ public class Monitor implements Logged {
     final var status = new MonitorStatus(monitorConfig);
     final var resp = new GetEntityResponse<MonitorStatus>();
 
-    for (final var zc: monitorConfig.getZones()) {
-      if (zc.getName() == null) {
-        return resp.invalid("Zone name is null: " + zc);
-      }
+    for (final var hs: monitorConfig.getHeatSources()) {
+      final var heatSource = new HeatSource(hs);
+      status.addHeatSource(heatSource);
 
-      if (status.addZone(new Zone(zc)) != null) {
-        return resp.invalid("Zone " + zc.getName() +
-                                    " already exists: " + zc);
-      }
-    }
-
-    for (final var db: hardwareConfig.getDigitalBoards()) {
-      for (final var ic: db.getInputs()) {
-        if (ic.getName() == null) {
-          return resp.invalid("Input name is null: " + ic);
+      for (final var zc: hs.getZones()) {
+        if (zc.getName() == null) {
+          return resp.invalid("Zone name is null: " + zc);
         }
 
-        // Input may not have a zone
+        if (heatSource.addZone(new Zone(zc)) != null) {
+          return resp.invalid("Zone " + zc.getName() +
+                                      " already exists: " + zc);
+        }
+      }
 
-        final Input input;
-        final Zone zone;
+      for (final var db: hardwareConfig.getDigitalBoards()) {
+        for (final var ic: db.getInputs()) {
+          if (ic.getName() == null) {
+            return resp.invalid("Input name is null: " + ic);
+          }
 
-        if (ic.getZone() == null) {
-          // Maybe other checks?
-          zone = null;
-        } else {
-          zone = status.getZone(ic.getZone());
-          if (zone == null) {
-            return resp.invalid("Zone " + ic.getZone() +
-                                        " does not exist: " +
+          // Input may not have a zone
+
+          final Input input;
+          final Zone zone;
+
+          if (ic.getZone() == null) {
+            // Maybe other checks?
+            zone = null;
+          } else {
+            zone = heatSource.getZone(ic.getZone());
+            if (zone == null) {
+              return resp.invalid("Zone " + ic.getZone() +
+                                          " does not exist: " +
+                                          ic);
+            }
+          }
+
+          input = new Input(ic.getName(), zone);
+
+          if (status.addInput(input) != null) {
+            return resp.invalid("Input " + ic.getName() +
+                                        " already exists: " +
                                         ic);
           }
-        }
 
-        input = new Input(ic.getName(), zone);
-
-        if (status.addInput(input) != null) {
-          return resp.invalid("Input " + ic.getName() +
-                                      " already exists: " +
-                                      ic);
-        }
-
-        if (zone == null) {
-          status.addSensor(input);
-        } else {
-          if (ic.isCirculator()) {
-            zone.setCirculator(input);
-          } else if (ic.isSubZone()) {
-            final var sz = zone.getSubZone(ic.getName());
-            if (sz == null) {
-              warn("No subzone {} for zone {}",
-                   ic.getName(), zone.getName());
-            } else {
-              sz.addInput(input);
-            }
+          if (zone == null) {
+            status.addSensor(input);
           } else {
-            zone.addInput(input);
+            if (ic.isCirculator()) {
+              zone.setCirculator(input);
+            } else if (ic.isSubZone()) {
+              final var sz = zone.getSubZone(ic.getName());
+              if (sz == null) {
+                warn("No subzone {} for zone {}",
+                     ic.getName(), zone.getName());
+              } else {
+                sz.addInput(input);
+              }
+            } else {
+              zone.addInput(input);
+            }
           }
         }
       }

@@ -19,8 +19,31 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xsl:template name="status">
-    <xsl:apply-templates select="/hsmon/status/heatSources/heatSource"
-                         mode="heatSourceList"/>
+  <xsl:template match="heatSource" mode="heatSourceList">
+    <div id="heatSource">
+      <strong><xsl:value-of select="name"/></strong>
+      <table class="zoneTable">
+        <tr>
+          <th>
+            <xsl:copy-of select="$hmon-OnOffState"/>
+          </th>
+          <td>
+            <xsl:value-of select="switchValue"/>
+          </td>
+        </tr>
+        <xsl:for-each select="temps/temp">
+          <tr>
+            <th>
+              <strong><xsl:value-of select="name"/></strong>
+            </th>
+            <td>
+              <xsl:value-of select="degreesCelsius"/><br/>
+            </td>
+          </tr>
+        </xsl:for-each>
+      </table>
+      <xsl:apply-templates select="zones/zone"
+                           mode="zonesList"/>
+    </div>
   </xsl:template>
 </xsl:stylesheet>

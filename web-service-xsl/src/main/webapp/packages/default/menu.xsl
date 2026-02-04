@@ -22,6 +22,7 @@
   <!--==== BANNER and MENU TABS  ====-->
   <xsl:template name="menu1">
     <div id="menu1">
+      <p>Menu items go here</p>
     </div>
   </xsl:template>
 </xsl:stylesheet>

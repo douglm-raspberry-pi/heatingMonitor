@@ -7,14 +7,15 @@ import org.bedework.base.ToString;
 
 import java.util.List;
 
-/**
+/** A heating system will consist of a number of heat sources.
+ *
  * User: mike Date: 3/19/25 Time: 22:24
  */
 public class MonitorConfig {
   private long inputsWaitTime;
   private long monitorWaitTime;
   private boolean centigrade;
-  private List<ZoneConfig> zones;
+  private List<HeatSourceConfig> heatSources;
 
   /**
    *
@@ -50,19 +51,19 @@ public class MonitorConfig {
     centigrade = val;
   }
 
-  public List<ZoneConfig> getZones() {
-    return zones;
+  public List<HeatSourceConfig> getHeatSources() {
+    return heatSources;
   }
 
-  public void setZones(final List<ZoneConfig> val) {
-    zones = val;
+  public void setHeatSources(final List<HeatSourceConfig> val) {
+    heatSources = val;
   }
 
   public ToString toStringSegment(final ToString ts) {
     ts.append("inputsWaitTime", inputsWaitTime)
       .append("monitorWaitTime", monitorWaitTime)
       .append("centigrade", centigrade)
-      .append("zones", zones);
+      .append("heatSources", heatSources);
 
     return ts;
   }

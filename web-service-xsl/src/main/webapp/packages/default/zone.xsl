@@ -21,7 +21,29 @@
 
   <xsl:template match="zone" mode="zonesList">
     <div id="zone">
-      <xsl:value-of select="name"/>
+      <strong><xsl:value-of select="name"/></strong>
+      <table class="zoneTable">
+        <tr>
+          <th>
+            <xsl:copy-of select="$hmon-OnOffState"/>
+          </th>
+          <td>
+            <xsl:value-of select="switchValue"/>
+          </td>
+        </tr>
+        <xsl:for-each select="temps/temp">
+          <tr>
+            <th>
+              <strong><xsl:value-of select="name"/></strong>
+            </th>
+            <td>
+              <xsl:value-of select="degreesCelsius"/><br/>
+            </td>
+          </tr>
+        </xsl:for-each>
+      </table>
+      <xsl:apply-templates select="subzones/subzone"
+                           mode="subzonesList"/>
     </div>
   </xsl:template>
 </xsl:stylesheet>

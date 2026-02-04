@@ -21,4 +21,7 @@
   <xsl:variable static="yes" name="hsmon-PageTitle"
                 select="'Heating Monitor Report'"/>
 
+  <xsl:variable static="yes" name="hmon-OnOffState"
+                select="'Switch status'"/>
+
 </xsl:stylesheet>
