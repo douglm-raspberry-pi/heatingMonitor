@@ -10,24 +10,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.douglm.heatingMonitor.common.config.HeatSourceConfig;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-/** provides information about a zone - consists of a number of
- * sub-zones, controlled by inputs and a circulator.
+/** provides information about a heat source - e.g a
+ * boiler. The input represents it's current state, e.g.
+ * the burners are running
  * <br/>
  * User: mike Date: 4/5/25 Time: 22:45
  */
-public class HeatSource extends BasicSwitchedEntity {
+public class HeatSource extends Input {
   @JsonIgnore
   private final HeatSourceConfig config;
   private final Map<String, Temperature> temps = new HashMap<>();
   private final Map<String, Zone> zones = new HashMap<>();
-  @JsonIgnore
-  private final List<Input> inputs = new ArrayList<>();
 
   @JsonCreator
   public HeatSource(@JsonProperty("name") final String name) {
@@ -85,14 +82,6 @@ public class HeatSource extends BasicSwitchedEntity {
     return null;
   }
 
-  public List<Input> getInputs() {
-    return inputs;
-  }
-
-  public void addInput(final Input val) {
-    inputs.add(val);
-  }
-
   public boolean equals(final HeatSource other) {
     return other != null && this.config.equals(other.getConfig());
   }
@@ -118,21 +107,11 @@ public class HeatSource extends BasicSwitchedEntity {
     }
   }
 
-  public SwitchedEntity toSwitchedEntity() {
-    final var res = new BasicSwitchedEntity(getName());
-    res.setLastChange(getLastChange());
-    res.setRunningTime(getRunningTime());
-    res.setSwitchValue(getSwitchValue());
-
-    return res;
-  }
-
   public ToString toStringSegment(final ToString ts) {
     return super.toStringSegment(ts)
                 .append("config", config)
                 .append("temps", getTemps())
-                .append("subZones", getZones())
-                .append("inputs", inputs);
+                .append("subZones", getZones());
   }
 
   public String toString() {

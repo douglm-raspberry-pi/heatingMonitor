@@ -24,4 +24,7 @@
   <xsl:variable static="yes" name="hmon-OnOffState"
                 select="'Switch status'"/>
 
+  <xsl:variable static="yes" name="hmon-RunningTime"
+                select="'Running Time'"/>
+
 </xsl:stylesheet>

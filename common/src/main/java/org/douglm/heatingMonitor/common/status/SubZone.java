@@ -10,10 +10,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.douglm.heatingMonitor.common.config.SubZoneConfig;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /** provides information about a zone - consists of a number of
@@ -21,14 +19,10 @@ import java.util.Map;
  * <br/>
  * User: mike Date: 4/5/25 Time: 22:45
  */
-public class SubZone extends BasicSwitchedEntity {
+public class SubZone extends Input {
   @JsonIgnore
   private final SubZoneConfig config;
-  private boolean inputChanged;
-  private boolean wasChecked;
   private final Map<String, Temperature> temps = new HashMap<>();
-  @JsonIgnore
-  private final List<Input> inputs = new ArrayList<>();
 
   @JsonCreator
   public SubZone(@JsonProperty("name") final String name) {
@@ -70,53 +64,18 @@ public class SubZone extends BasicSwitchedEntity {
     temps.put(val.getName(), val);
   }
 
-  public List<Input> getInputs() {
-    return inputs;
-  }
-
-  public void addInput(final Input val) {
-    inputs.add(val);
-  }
-
-  public boolean getInputChanged() {
-    return inputChanged;
-  }
-
-  /** Called whenever an input changes state
-   *
-   */
-  public void inputChanged() {
-    inputChanged = true;
-  }
-
-  public boolean getWasChecked() {
-    return wasChecked;
-  }
-
-  public void setWasChecked(final boolean val) {
-    wasChecked = val;
+  public Temperature getTemp(final String name) {
+    return temps.get(name);
   }
 
   public boolean equals(final SubZone other) {
     return other != null && this.config.equals(other.getConfig());
   }
 
-  public SwitchedEntity toSwitchedEntity() {
-    final var res = new BasicSwitchedEntity(getName());
-    res.setLastChange(getLastChange());
-    res.setRunningTime(getRunningTime());
-    res.setSwitchValue(getSwitchValue());
-
-    return res;
-  }
-
   public ToString toStringSegment(final ToString ts) {
     return super.toStringSegment(ts)
                 .append("config", config)
-                .append("inputChanged", getInputChanged())
-                .append("wasChecked", getWasChecked())
-                .append("temps", getTemps())
-                .append("inputs", inputs);
+                .append("temps", getTemps());
   }
 
   public String toString() {

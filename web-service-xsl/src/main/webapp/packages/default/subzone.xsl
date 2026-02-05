@@ -31,6 +31,14 @@
             <xsl:value-of select="switchValue"/>
           </td>
         </tr>
+        <tr>
+          <th>
+            <xsl:copy-of select="$hmon-RunningTime"/>
+          </th>
+          <td>
+            <xsl:value-of select="runningTime"/>
+          </td>
+        </tr>
         <xsl:for-each select="temps/temp">
           <tr>
             <th>

@@ -12,6 +12,7 @@ try {
   <c:if test="${not empty status}">
   <status>
     <startTime><c:out value="${status.startTime}"/></startTime>
+    <alwaysOnErrors><c:out value="${status.alwaysOnErrors}"/></alwaysOnErrors>
     <c:if test="${not empty status.sensors}">
       <sensors>
       <c:forEach var="s" items="${status.sensors}">

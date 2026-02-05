@@ -21,7 +21,8 @@ import java.util.Map;
 public class MonitorStatus {
   @JsonIgnore
   private final MonitorConfig config;
-  private final long startTime =  System.currentTimeMillis();
+  private long startTime;
+  private long timestamp;
 
   private final Map<String, HeatSource> heatSources = new HashMap<>();
   @JsonIgnore
@@ -44,8 +45,20 @@ public class MonitorStatus {
     return config;
   }
 
+  public void setStartTime(final long val) {
+    startTime = val;
+  }
+
   public long getStartTime() {
     return startTime;
+  }
+
+  public void setTimestamp(final long val) {
+    timestamp = val;
+  }
+
+  public long getTimestamp() {
+    return timestamp;
   }
 
   public HeatSource getHeatSource(final String name) {
@@ -94,6 +107,10 @@ public class MonitorStatus {
 
   public void addSensor(final Input val) {
     sensors.add(val);
+  }
+
+  public void setAlwaysOnErrors(final int val) {
+    alwaysOnErrors = val;
   }
 
   public int getAlwaysOnErrors() {

@@ -5,10 +5,9 @@ package org.douglm.heatingMonitor;
 
 import org.bedework.util.misc.AbstractProcessorThread;
 
+import org.douglm.heatingMonitor.common.MonitorWebServiceClient;
 import org.douglm.heatingMonitor.common.config.MonitorConfig;
-import org.douglm.heatingMonitor.common.status.Input;
 import org.douglm.heatingMonitor.common.status.MonitorStatus;
-import org.douglm.heatingMonitor.common.status.Zone;
 
 /**
  * User: mike Date: 4/6/25 Time: 13:08
@@ -16,15 +15,18 @@ import org.douglm.heatingMonitor.common.status.Zone;
 public class MonitorThread extends AbstractProcessorThread {
   private final MonitorStatus status;
   private final MonitorConfig config;
+  private final MonitorWebServiceClient webClient;
 
   /**
    * @param status for the monitor
    */
-  public MonitorThread(final MonitorStatus status) {
+  public MonitorThread(final MonitorStatus status,
+                       final MonitorWebServiceClient webClient) {
     super("Monitor");
 
     this.status = status;
     this.config = status.getConfig();
+    this.webClient = webClient;
   }
 
   @Override
@@ -40,31 +42,11 @@ public class MonitorThread extends AbstractProcessorThread {
   @Override
   public void runProcess() throws Throwable {
     while (getRunning()) {
-
       synchronized (this) {
-        if (status.getAlwaysOnErrors() > 0) {
-          info("Always on errors: " + status.getAlwaysOnErrors());
-        }
-
-        for (final var input: status.getInputs()) {
-          if (input.testAndSetChanged()) {
-            final var zone = input.getZone();
-            if (zone != null) {
-              zone.inputChanged();
-            }
-
-            debug("Input " + input.getName() +
-                    " changed to " + input.getSwitchValue());
-          }
-        }
-
-        // See if any zones need checking
-        for (final var hs: status.getHeatSources()) {
-          for (final var zone: hs.getZones()) {
-            if (zone.getInputChanged()) {
-              updateZone(zone);
-            }
-          }
+        status.setTimestamp(System.currentTimeMillis());
+        final var postRes = webClient.postStatus(status);
+        if (!postRes.isOk()) {
+          warn(postRes.toString());
         }
 
         try {
@@ -80,60 +62,5 @@ public class MonitorThread extends AbstractProcessorThread {
   @Override
   public void close() {
 
-  }
-
-  private void updateZone(final Zone zone) {
-    // Check the inputs for this zone
-    final var inputs = zone.getInputs();
-
-    /* If any input is on we expect the circulator to be on.
-       There may be a delay from the input being true to the
-       circulator actually coming on.
-
-       Zone valves have to rotate to the end of their travel to turn
-       the zone on.
-
-       We allow a single mismatch between input states and actual
-       circulator state.
-     */
-
-    final var currentState = zone.getCirculator().getSwitchValue();
-
-    var expectOn = false;
-    if (inputs.isEmpty()) {
-      expectOn = currentState;
-    } else {
-      for (final Input input: inputs) {
-        if (input.getSwitchValue()) {
-          expectOn = true;
-          break;
-        }
-      }
-    }
-
-    if (expectOn == currentState) {
-      if (expectOn != zone.isCirculatorOn()) {
-        // Update the zone if necessary
-        zone.setWasChecked(false);
-        zone.setCirculatorOn(currentState);
-        if (!currentState) {
-          // zone turned off - update amount of time on
-          zone.updateRunningTime();
-
-          debug("zone {}, running time {} minutes, {}%",
-                zone.getConfig().getName(),
-                zone.getRunningTimeMinutes(),
-                zone.getRunningTimePercent(status.getStartTime()));
-        } else {
-          zone.setLastChange(System.currentTimeMillis());
-        }
-      }
-    } else if (zone.getWasChecked()) {
-        warn("Mismatch for {}: current: {}, expected: {}",
-             zone.getConfig().getName(),
-             currentState, expectOn);
-    } else {
-      zone.setWasChecked(true);
-    }
   }
 }

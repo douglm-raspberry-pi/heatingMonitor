@@ -6,10 +6,6 @@
   <runningTime><c:out value="${zone.runningTime}"/></runningTime>
   <switchValue><c:out value="${zone.switchValue}"/></switchValue>
 
-  <circulatorOn><c:out value="${zone.circulatorOn}"/></circulatorOn>
-  <inputChanged><c:out value="${zone.inputChanged}"/></inputChanged>
-  <wasChecked><c:out value="${zone.wasChecked}"/></wasChecked>
-
   <c:if test="${not empty zone.temps}">
     <temps>
     <c:forEach var="temp" items="${zone.temps}">

@@ -26,6 +26,7 @@ import static org.douglm.heatingMonitor.common.util.MonitorUtil.readConfig;
 public class Monitor implements Logged {
   private final Context pi4j;
   private final HardwareConfig hardwareConfig;
+  private final long startTime =  System.currentTimeMillis();
 
   private MonitorConfig monitorConfig;
   private MonitorStatus status;
@@ -79,11 +80,11 @@ public class Monitor implements Logged {
 
   public void monitorBoards() {
     final var inputs = new InputsThread(pi4j, status,
-                                        hardwareConfig,
-                                        webClient);
+                                        hardwareConfig);
     inputs.start();
 
-    final var monitor = new MonitorThread(status);
+    final var monitor = new MonitorThread(status,
+                                          webClient);
     monitor.start();
 
     try {
@@ -103,6 +104,8 @@ public class Monitor implements Logged {
   private GetEntityResponse<MonitorStatus> fromConfig() {
     final var status = new MonitorStatus(monitorConfig);
     final var resp = new GetEntityResponse<MonitorStatus>();
+
+    status.setStartTime(startTime);
 
     for (final var hs: monitorConfig.getHeatSources()) {
       final var heatSource = new HeatSource(hs);
@@ -127,7 +130,7 @@ public class Monitor implements Logged {
 
           // Input may not have a zone
 
-          final Input input;
+          Input input = null;
           final Zone zone;
 
           if (ic.getZone() == null) {
@@ -142,7 +145,23 @@ public class Monitor implements Logged {
             }
           }
 
-          input = new Input(ic.getName(), zone);
+          if (zone == null) {
+            input = new Input(ic.getName());
+            status.addSensor(input);
+          } else if (ic.isCirculator()) {
+            input = zone;
+          } else if (ic.isSubZone()) {
+            input = zone.getSubZone(ic.getName());
+            if (input == null) {
+              return resp.invalid("No subzone " +
+                                          ic.getName() +
+                                          " for zone " +
+                                          zone.getName());
+            }
+          } else {
+            return resp.invalid("No subzone specified for " +
+                                        ic.getName());
+          }
 
           if (status.addInput(input) != null) {
             return resp.invalid("Input " + ic.getName() +
@@ -150,23 +169,6 @@ public class Monitor implements Logged {
                                         ic);
           }
 
-          if (zone == null) {
-            status.addSensor(input);
-          } else {
-            if (ic.isCirculator()) {
-              zone.setCirculator(input);
-            } else if (ic.isSubZone()) {
-              final var sz = zone.getSubZone(ic.getName());
-              if (sz == null) {
-                warn("No subzone {} for zone {}",
-                     ic.getName(), zone.getName());
-              } else {
-                sz.addInput(input);
-              }
-            } else {
-              zone.addInput(input);
-            }
-          }
         }
       }
     }

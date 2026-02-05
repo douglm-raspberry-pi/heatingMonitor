@@ -11,10 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.douglm.heatingMonitor.common.config.SubZoneConfig;
 import org.douglm.heatingMonitor.common.config.ZoneConfig;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /** provides information about a zone - consists of a number of
@@ -22,17 +20,11 @@ import java.util.Map;
  * <br/>
  * User: mike Date: 4/5/25 Time: 22:45
  */
-public class Zone extends BasicSwitchedEntity {
+public class Zone extends Input {
   @JsonIgnore
   private final ZoneConfig config;
-  private Input circulator;
-  private boolean circulatorOn;
-  private boolean inputChanged;
-  private boolean wasChecked;
   private final Map<String, Temperature> temps = new HashMap<>();
-  private final Map<String, Zone> subZones = new HashMap<>();
-  @JsonIgnore
-  private final List<Input> inputs = new ArrayList<>();
+  private final Map<String, SubZone> subZones = new HashMap<>();
 
   @JsonCreator
   public Zone(@JsonProperty("name") final String name) {
@@ -54,7 +46,7 @@ public class Zone extends BasicSwitchedEntity {
 
     if (config.getSubZones() != null) {
       for (final var szc: config.getSubZones()) {
-        addSubZone(new Zone(szc));
+        addSubZone(new SubZone(szc));
       }
     }
   }
@@ -65,31 +57,6 @@ public class Zone extends BasicSwitchedEntity {
 
   public ZoneConfig getConfig() {
     return config;
-  }
-
-  /**
-   *
-   * @return input which monitors the actual circulator state
-   */
-  @JsonIgnore
-  public Input getCirculator() {
-    return circulator;
-  }
-
-  public void setCirculator(final Input val) {
-    circulator = val;
-  }
-
-  /**
-   *
-   * @return true if circulator is running
-   */
-  public boolean isCirculatorOn() {
-    return circulatorOn;
-  }
-
-  public void setCirculatorOn(final boolean val) {
-    circulatorOn = val;
   }
 
   public Collection<Temperature> getTemps() {
@@ -116,7 +83,7 @@ public class Zone extends BasicSwitchedEntity {
     }
 
     for (final var sz: subZones.values()) {
-      final var szTemp = sz.findTemp(name);
+      final var szTemp = sz.getTemp(name);
       if (szTemp != null) {
         return szTemp;
       }
@@ -125,50 +92,23 @@ public class Zone extends BasicSwitchedEntity {
     return null;
   }
 
-  public List<Input> getInputs() {
-    return inputs;
-  }
-
-  public void addInput(final Input val) {
-    inputs.add(val);
-  }
-
-  public boolean getInputChanged() {
-    return inputChanged;
-  }
-
-  /** Called whenever an input changes state
-   *
-   */
-  public void inputChanged() {
-    inputChanged = true;
-  }
-
-  public boolean getWasChecked() {
-    return wasChecked;
-  }
-
-  public void setWasChecked(final boolean val) {
-    wasChecked = val;
-  }
-
   public boolean equals(final Zone other) {
     return other != null && this.config.equals(other.getConfig());
   }
 
-  public void addSubZone(final Zone val) {
+  public void addSubZone(final SubZone val) {
     subZones.put(val.getName(), val);
   }
 
-  public Zone getSubZone(final String name) {
+  public SubZone getSubZone(final String name) {
     return subZones.get(name);
   }
 
-  public Collection<Zone> getSubZones() {
+  public Collection<SubZone> getSubZones() {
     return subZones.values();
   }
 
-  public void setSubZones(final Collection<Zone> val) {
+  public void setSubZones(final Collection<SubZone> val) {
     subZones.clear();
     if (val != null) {
       for (final var zone: val) {
@@ -177,25 +117,11 @@ public class Zone extends BasicSwitchedEntity {
     }
   }
 
-  public SwitchedEntity toSwitchedEntity() {
-    final var res = new BasicSwitchedEntity(getName());
-    res.setLastChange(getLastChange());
-    res.setRunningTime(getRunningTime());
-    res.setSwitchValue(getSwitchValue());
-
-    return res;
-  }
-
   public ToString toStringSegment(final ToString ts) {
     return super.toStringSegment(ts)
-                .append("config", config)
-                .append("circulator", circulator)
-                .append("circulatorOn", isCirculatorOn())
-                .append("inputChanged", getInputChanged())
-                .append("wasChecked", getWasChecked())
+                .append("config", getConfig())
                 .append("temps", getTemps())
-                .append("subZones", getSubZones())
-                .append("inputs", inputs);
+                .append("subZones", getSubZones());
   }
 
   public String toString() {

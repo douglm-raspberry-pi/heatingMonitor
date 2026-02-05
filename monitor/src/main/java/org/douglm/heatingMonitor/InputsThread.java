@@ -6,7 +6,6 @@ package org.douglm.heatingMonitor;
 import org.bedework.util.misc.AbstractProcessorThread;
 
 import com.pi4j.context.Context;
-import org.douglm.heatingMonitor.common.MonitorWebServiceClient;
 import org.douglm.heatingMonitor.common.status.MonitorStatus;
 import org.douglm.heatingMonitor.config.HardwareConfig;
 import org.douglm.piSpi.PiSpi8AIChannelConfig;
@@ -19,7 +18,6 @@ public class InputsThread extends AbstractProcessorThread {
   private final Context pi4j;
   private final MonitorStatus status;
   private final HardwareConfig config;
-  private final MonitorWebServiceClient webClient;
 
   /**
    * @param pi4j context
@@ -27,14 +25,12 @@ public class InputsThread extends AbstractProcessorThread {
    */
   public InputsThread(final Context pi4j,
                       final MonitorStatus status,
-                      final HardwareConfig config,
-                      final MonitorWebServiceClient webClient) {
+                      final HardwareConfig config) {
     super("Inputs");
 
     this.pi4j = pi4j;
     this.status = status;
     this.config = config;
-    this.webClient = webClient;
   }
 
   @Override
@@ -77,7 +73,6 @@ public class InputsThread extends AbstractProcessorThread {
             final var istatus = states[ic.getIndex()];
             final var input = status.getInput(inputName);
 
-            info(inputName + ": " +  istatus);
             input.currentStatus(istatus);
 
             if (ic.isAlwaysOn() && !istatus) {
@@ -85,11 +80,6 @@ public class InputsThread extends AbstractProcessorThread {
               warn("Expected on for " + inputName);
             }
           }
-        }
-
-        final var postRes = webClient.postStatus(status);
-        if (!postRes.isOk()) {
-          warn(postRes.toString());
         }
 
         synchronized (this) {
