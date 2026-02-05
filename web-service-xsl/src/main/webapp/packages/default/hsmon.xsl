@@ -24,6 +24,7 @@
   <xsl:include href="header.xsl" />
   <xsl:include href="heatSource.xsl" />
   <xsl:include href="menu.xsl" />
+  <xsl:include href="sensor.xsl" />
   <xsl:include href="status.xsl" />
   <xsl:include href="subzone.xsl" />
   <xsl:include href="zone.xsl" />

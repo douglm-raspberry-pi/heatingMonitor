@@ -41,22 +41,22 @@ public class RunTest extends AbstractProcessorThread
 
   @Override
   public void runProcess() {
-    for (final var hs: status.getHeatSources()) {
-      if (hs.getZones() != null) {
-        for (final var z: hs.getZones()) {
-          z.incRunningTime(500);
+    final var webClient = monitor.getWebClient();
 
-          if (z.getSubZones() != null) {
-            for (final var sz: z.getSubZones()) {
-              sz.incRunningTime(250);
+    while (getRunning()) {
+      for (final var hs: status.getHeatSources()) {
+        if (hs.getZones() != null) {
+          for (final var z: hs.getZones()) {
+            z.currentStatus(!z.getSwitchValue());
+
+            if (z.getSubZones() != null) {
+              for (final var sz: z.getSubZones()) {
+                sz.currentStatus(!sz.getSwitchValue());
+              }
             }
           }
         }
       }
-    }
-    final var webClient = monitor.getWebClient();
-
-    while (getRunning()) {
       final var postRes = webClient.postStatus(status);
       if (!postRes.isOk()) {
         warn(postRes.toString());

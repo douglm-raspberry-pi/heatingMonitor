@@ -19,11 +19,10 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xsl:template name="status">
-    <sensors>
-      <xsl:apply-templates select="/hsmon/status/sensors/sensor"/>
-    </sensors>
-    <xsl:apply-templates select="/hsmon/status/heatSources/heatSource"
-                         mode="heatSourceList"/>
+  <xsl:template match="sensor">
+    <div id="sensor">
+      <label for="sensorValue"><xsl:copy-of select="name"/>: </label>
+      <span id="sensorValue"><xsl:value-of select="switchValue"/></span>
+    </div>
   </xsl:template>
 </xsl:stylesheet>
