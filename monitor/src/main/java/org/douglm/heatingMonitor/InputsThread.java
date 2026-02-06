@@ -73,6 +73,10 @@ public class InputsThread extends AbstractProcessorThread {
             final var istatus = states[ic.getIndex()];
             final var input = status.getInput(inputName);
 
+            if (debug()) {
+              debug("About to update status for " +
+                            inputName + " to " + istatus);
+            }
             input.currentStatus(istatus);
 
             if (ic.isAlwaysOn() && !istatus) {
