@@ -67,17 +67,17 @@ digitalBoards:
         highTrue: true
         alwaysOn: true
       - index: 1
-        name: "Apt #1 zone"
+        name: "Apartment 1"
         highTrue: true
         zone: "Apartment 1"
         circulator: true
       - index: 2
-        name: "Apt #2 zone"
+        name: "Apartment 2"
         highTrue: true
         zone: "Apartment 2"
         circulator: true
       - index: 3
-        name: "Water heater"
+        name: "Hot Water"
         highTrue: true
         zone: "Hot Water"
         circulator: true
