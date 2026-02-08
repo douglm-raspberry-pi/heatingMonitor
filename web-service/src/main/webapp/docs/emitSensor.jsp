@@ -1,9 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="https://douglm.org/jsp/taglib/hwmon" prefix="hwm" %>
 
 <sensor>
-  <name><c:out value="${sensor.name}"/></name>
-  <lastChange><c:out value="${sensor.lastChange}"/></lastChange>
-  <runningTime><c:out value="${sensor.runningTime}"/></runningTime>
-  <switchValue><c:out value="${sensor.switchValue}"/></switchValue>
+  <hwm:emitInput name="sensor" />
 </sensor>
 

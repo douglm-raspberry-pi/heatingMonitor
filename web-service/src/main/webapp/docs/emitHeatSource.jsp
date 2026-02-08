@@ -1,21 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="https://douglm.org/jsp/taglib/hwmon" prefix="hwm" %>
 
 <heatSource>
-  <name><c:out value="${heatSource.name}"/></name>
-  <lastChange><c:out value="${heatSource.lastChange}"/></lastChange>
-  <runningTime><c:out value="${heatSource.runningTime}"/></runningTime>
-  <switchValue><c:out value="${heatSource.switchValue}"/></switchValue>
+  <hwm:emitInput name="heatSource" />
+  <hwm:emitTemps name="heatSource" property="temps" />
 
-  <c:if test="${not empty heatSource.temps}">
-    <temps>
-    <c:forEach var="temp" items="${heatSource.temps}">
-      <temp>
-        <name><c:out value="${temp.name}"/></name>
-        <degreesCelsius><c:out value="${temp.degreesCelsius}"/></degreesCelsius>
-      </temp>
-    </c:forEach>
-    </temps>
-  </c:if>
   <c:if test="${not empty heatSource.zones}">
     <zones>
       <c:forEach var="z" items="${heatSource.zones}">

@@ -15,25 +15,21 @@
   <Appenders>
     <RollingFile name="FILE" fileName="${user.home}/logs/hmon.log"
                  filePattern="logs/hmon-%d{yyyy-MM-dd}.log">
-      <layout class="org.apache.log4j.PatternLayout">
-        <!-- The default pattern: Date Priority [Category] Message\n -->
-        <param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
-      </layout>
       <PatternLayout>
         <Pattern>%d %-5p [%c] %m%n</Pattern>
       </PatternLayout>
       <Policies>
-        <Delete basePath="${user.home}/logs">
-          <IfLastModified age="P5D"/>
-        </Delete>
         <TimeBasedTriggeringPolicy />
         <SizeBasedTriggeringPolicy size="10 MB"/>
       </Policies>
+      <DefaultRolloverStrategy>
+        <Delete basePath="${user.home}/logs" maxDepth="2">
+          <IfLastModified age="5d" />
+        </Delete>
+      </DefaultRolloverStrategy>
     </RollingFile>
 
     <Console name="CONSOLE" target="SYSTEM_OUT">
-      <param name="Threshold" value="DEBUG"/>
-
       <PatternLayout pattern="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
     </Console>
   </Appenders>

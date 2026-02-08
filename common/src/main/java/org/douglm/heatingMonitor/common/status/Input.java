@@ -16,6 +16,7 @@ public class Input implements SwitchedEntity {
   private final String name;
   private long lastChange;
   private long runningTime;
+  private long offTime;
   private boolean switchValue;
 
   // true if lastStatus needs flipping
@@ -57,6 +58,21 @@ public class Input implements SwitchedEntity {
     runningTime += val;
   }
 
+  @Override
+  public long getOffTime() {
+    return offTime;
+  }
+
+  @Override
+  public void setOffTime(final long val) {
+    offTime = val;
+  }
+
+  @Override
+  public void incOffTime(final long val) {
+    offTime += val;
+  }
+
   /**
    *
    * @return status last time monitor checked.
@@ -72,19 +88,8 @@ public class Input implements SwitchedEntity {
   }
 
   public void currentStatus(final boolean val) {
-    if (val == getSwitchValue()) {
-      return;
-    }
-
+    updateTimes();
     setSwitchValue(val);
-
-    if (!getSwitchValue()) {
-      // Turned off - update running time
-      updateRunningTime();
-    } else {
-      // Turned on - flag start
-      setLastChange(System.currentTimeMillis());
-    }
   }
 
   @JsonIgnore
@@ -96,6 +101,7 @@ public class Input implements SwitchedEntity {
     return ts.append("name", getName())
              .append("lastChange", getLastChange())
              .append("runningTime", getRunningTime())
+             .append("offTime", getOffTime())
              .append("switchValue", getSwitchValue());
   }
 

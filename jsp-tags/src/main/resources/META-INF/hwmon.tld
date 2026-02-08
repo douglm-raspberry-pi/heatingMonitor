@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
+  <display-name>Hwmon Tag library</display-name>
+  <tlib-version>1.0</tlib-version>
+  <short-name>hwmon</short-name>
+  <uri>https://douglm.org/jsp/taglib/hwmon</uri>
+
+  <tag>
+    <description>Emit input</description>
+    <name>emitInput</name>
+    <tag-class>org.douglm.heatingMonitor.jsp.taglib.EmitInputTag</tag-class>
+    <body-content>empty</body-content>
+
+    <attribute>
+      <name>name</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>property</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>scope</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>tagName</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>indent</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>full</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+
+  <tag>
+    <description>Emit temperatures</description>
+    <name>emitTemps</name>
+    <tag-class>org.douglm.heatingMonitor.jsp.taglib.EmitTempsTag</tag-class>
+    <body-content>empty</body-content>
+
+    <attribute>
+      <name>name</name>
+      <required>true</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>property</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>scope</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>tagName</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>indent</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+
+    <attribute>
+      <name>full</name>
+      <required>false</required>
+      <rtexprvalue>false</rtexprvalue>
+    </attribute>
+  </tag>
+</taglib>
+

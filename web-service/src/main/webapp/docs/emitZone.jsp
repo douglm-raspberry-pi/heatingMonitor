@@ -1,21 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="https://bedework.org/jsp/taglib/bedework-tags" prefix="bwt" %>
+<%@ taglib uri="https://douglm.org/jsp/taglib/hwmon" prefix="hwm" %>
 
 <zone>
-  <name><c:out value="${zone.name}"/></name>
-  <lastChange><c:out value="${zone.lastChange}"/></lastChange>
-  <runningTime><c:out value="${zone.runningTime}"/></runningTime>
-  <switchValue><c:out value="${zone.switchValue}"/></switchValue>
+  <hwm:emitInput name="zone" />
+  <hwm:emitTemps name="zone" property="temps" />
 
-  <c:if test="${not empty zone.temps}">
-    <temps>
-    <c:forEach var="temp" items="${zone.temps}">
-      <temp>
-        <name><c:out value="${temp.name}"/></name>
-        <degreesCelsius><c:out value="${temp.degreesCelsius}"/></degreesCelsius>
-      </temp>
-    </c:forEach>
-    </temps>
-  </c:if>
   <c:if test="${not empty zone.subZones}">
     <subzones>
       <c:forEach var="sz" items="${zone.subZones}">

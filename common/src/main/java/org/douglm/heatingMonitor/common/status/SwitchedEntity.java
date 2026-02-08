@@ -1,7 +1,5 @@
 package org.douglm.heatingMonitor.common.status;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * User: mike Date: 4/6/25 Time: 23:32
  */
@@ -16,15 +14,33 @@ public interface SwitchedEntity {
 
   void setLastChange(long val);
 
+  /**
+   * @return time in millis the switch is on
+   */
   long getRunningTime();
 
   /** For json.
    *
    * @param val running time in millis
    */
+  @SuppressWarnings("unused")
   void setRunningTime(long val);
 
   void incRunningTime(long val);
+
+  /**
+   * @return time in millis the switch is off
+   */
+  long getOffTime();
+
+  /** For json.
+   *
+   * @param val off time in millis
+   */
+  @SuppressWarnings("unused")
+  void setOffTime(long val);
+
+  void incOffTime(long val);
 
   /**
    *
@@ -34,21 +50,13 @@ public interface SwitchedEntity {
 
   void setSwitchValue(boolean val);
 
-  default void updateRunningTime() {
+  default void updateTimes() {
     final var now = System.currentTimeMillis();
-    incRunningTime(now - getLastChange());
+    if (getSwitchValue()) {
+      incRunningTime(now - getLastChange());
+    } else {
+      incOffTime(now - getLastChange());
+    }
     setLastChange(now);
-  }
-
-  @JsonIgnore
-  default long getRunningTimeMinutes() {
-    return getRunningTime() / 60000;
-  }
-
-  @JsonIgnore
-  default int getRunningTimePercent(final long start) {
-    final var sinceStart =
-            System.currentTimeMillis() - start;
-    return (int)(100 * getRunningTime() / sinceStart);
   }
 }

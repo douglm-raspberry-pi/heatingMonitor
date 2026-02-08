@@ -25,6 +25,12 @@
     </dependency>
 
     <dependency>
+      <groupId>org.douglm.heating-monitor</groupId>
+      <artifactId>jsp-tags</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.bedework</groupId>
       <artifactId>bw-base</artifactId>
     </dependency>

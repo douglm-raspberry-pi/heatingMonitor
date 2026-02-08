@@ -37,7 +37,10 @@
               <strong><xsl:value-of select="name"/></strong>
             </th>
             <td>
-              <xsl:value-of select="degreesCelsius"/><br/>
+              <xsl:value-of select="degreesCelsius"/>
+              <xsl:text> (</xsl:text>
+              <xsl:value-of select="degreesFahrenheit"/>
+              <xsl:text>)</xsl:text>
             </td>
           </tr>
         </xsl:for-each>

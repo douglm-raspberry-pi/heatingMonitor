@@ -22,5 +22,6 @@
     <module>common</module>
     <module>web-service-tester</module>
     <module>web-service-xsl</module>
+    <module>jsp-tags</module>
   </modules>
 </project>
