@@ -37,6 +37,18 @@
           </th>
           <td>
             <xsl:value-of select="runningTime"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="runningTimeFormatted"/>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <xsl:copy-of select="$hmon-OffTime"/>
+          </th>
+          <td>
+            <xsl:value-of select="offTime"/>
+            <xsl:text> </xsl:text>
+            <xsl:value-of select="offTimeFormatted"/>
           </td>
         </tr>
         <xsl:for-each select="temps/temp">
@@ -46,9 +58,9 @@
             </th>
             <td>
               <xsl:value-of select="degreesCelsius"/>
-              <xsl:text> (</xsl:text>
+              <xsl:text>℃ (</xsl:text>
               <xsl:value-of select="degreesFahrenheit"/>
-              <xsl:text>)</xsl:text>
+              <xsl:text>℉)</xsl:text>
             </td>
           </tr>
         </xsl:for-each>

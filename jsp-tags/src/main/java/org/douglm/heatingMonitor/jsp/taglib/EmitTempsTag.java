@@ -55,7 +55,9 @@ public class EmitTempsTag extends NameScopePropertyTag {
   public EmitTempsTag() {
   }
 
-  private static DecimalFormat df = new DecimalFormat("#.###");
+  private static final DecimalFormat df =
+          new DecimalFormat("#.###");
+
   /** Called at end of Tag
    *
    * @return int      either EVAL_PAGE or SKIP_PAGE

@@ -25,6 +25,8 @@ import org.douglm.heatingMonitor.common.status.Input;
 
 import jakarta.servlet.jsp.JspWriter;
 
+import java.text.DecimalFormat;
+
 import static org.bedework.util.servlet.jsp.BwTagUtilCommon.closeTag;
 import static org.bedework.util.servlet.jsp.BwTagUtilCommon.openTag;
 import static org.bedework.util.servlet.jsp.BwTagUtilCommon.outTagged;
@@ -44,6 +46,9 @@ public class EmitInputTag extends NameScopePropertyTag {
 
   /** Optional attribute: true for all fields. */
   private boolean full = true;
+
+  private static final DecimalFormat df =
+          new DecimalFormat("##");
 
   /**
    * Constructor
@@ -93,10 +98,16 @@ public class EmitInputTag extends NameScopePropertyTag {
     outTagged(out, curIndent, "name", val.getName());
     outTagged(out, curIndent, "lastChange",
               String.valueOf(val.getLastChange()));
+    final var runningMillis = val.getRunningTime();
     outTagged(out, curIndent, "runningTime",
-              String.valueOf(val.getRunningTime()));
+              String.valueOf(runningMillis));
+    outTagged(out, curIndent, "runningTimeFormatted",
+              formatDuration(runningMillis));
+    final var offMillis = val.getOffTime();
     outTagged(out, curIndent, "offTime",
-              String.valueOf(val.getOffTime()));
+              String.valueOf(offMillis));
+    outTagged(out, curIndent, "offTimeFormatted",
+              formatDuration(offMillis));
     outTagged(out, curIndent, "switchValue", val.getSwitchValue());
 
     if (tagName != null) {
@@ -144,5 +155,13 @@ public class EmitInputTag extends NameScopePropertyTag {
    */
   public boolean getFull() {
     return full;
+  }
+
+  private static String formatDuration(final double val) {
+    final int asSeconds = (int)((val + 500) / 1000);
+    final int asMinutes = asSeconds / 60;
+    final int asHours = asMinutes / 60;
+
+    return df.format(asHours) + ":" + df.format(asMinutes % 60) + ":" + (asSeconds % 60);
   }
 }

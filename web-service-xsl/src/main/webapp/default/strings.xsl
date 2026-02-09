@@ -18,11 +18,14 @@
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
         version="3.0">
 
-  <xsl:variable static="yes" name="hsmon-PageTitle"
-                select="'Heating Monitor Report'"/>
+  <xsl:variable static="yes" name="hmon-OffTime"
+                select="'Off Time'"/>
 
   <xsl:variable static="yes" name="hmon-OnOffState"
                 select="'Switch status'"/>
+
+  <xsl:variable static="yes" name="hsmon-PageTitle"
+                select="'Heating Monitor Report'"/>
 
   <xsl:variable static="yes" name="hmon-RunningTime"
                 select="'Running Time'"/>
