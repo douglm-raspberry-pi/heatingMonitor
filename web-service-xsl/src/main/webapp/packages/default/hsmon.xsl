@@ -50,4 +50,35 @@
       </body>
     </html>
   </xsl:template>
+
+  <xsl:template name="outInputRows">
+    <tr>
+      <th>
+        <xsl:copy-of select="$hmon-OnOffState"/>
+      </th>
+      <td>
+        <xsl:value-of select="./switchValue"/>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <xsl:copy-of select="$hmon-RunningTime"/>
+      </th>
+      <td>
+        <xsl:value-of select="./runningTime"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="./runningTimeFormatted"/>
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <xsl:copy-of select="$hmon-OffTime"/>
+      </th>
+      <td>
+        <xsl:value-of select="./offTime"/>
+        <xsl:text> </xsl:text>
+        <xsl:value-of select="./offTimeFormatted"/>
+      </td>
+    </tr>
+  </xsl:template>
 </xsl:stylesheet>

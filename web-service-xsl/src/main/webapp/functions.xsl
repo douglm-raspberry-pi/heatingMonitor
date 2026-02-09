@@ -17,7 +17,8 @@
 <xsl:stylesheet
         version="3.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:hmon="http://douglm.org/xslt/hwmon">
 
   <!-- Compare two strings ignoring case, returning same
        values as compare(). -->

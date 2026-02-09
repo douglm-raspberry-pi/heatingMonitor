@@ -17,40 +17,14 @@
 <xsl:stylesheet
         version="3.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:hmon="http://douglm.org/xslt/hwmon">
 
   <xsl:template match="zone" mode="zonesList">
     <div id="zone">
       <strong><xsl:value-of select="name"/></strong>
       <table class="zoneTable">
-        <tr>
-          <th>
-            <xsl:copy-of select="$hmon-OnOffState"/>
-          </th>
-          <td>
-            <xsl:value-of select="switchValue"/>
-          </td>
-        </tr>
-        <tr>
-          <th>
-            <xsl:copy-of select="$hmon-RunningTime"/>
-          </th>
-          <td>
-            <xsl:value-of select="runningTime"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="runningTimeFormatted"/>
-          </td>
-        </tr>
-        <tr>
-          <th>
-            <xsl:copy-of select="$hmon-OffTime"/>
-          </th>
-          <td>
-            <xsl:value-of select="offTime"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="offTimeFormatted"/>
-          </td>
-        </tr>
+        <xsl:call-template name="outInputRows"/>
         <xsl:for-each select="temps/temp">
           <tr>
             <th>

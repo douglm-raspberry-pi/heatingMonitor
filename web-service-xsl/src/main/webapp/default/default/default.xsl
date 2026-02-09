@@ -17,7 +17,8 @@
 <xsl:stylesheet
         version="3.0"
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:hmon="http://douglm.org/xslt/hwmon">
 <xsl:output
   method="xml"
   indent="no"
@@ -27,6 +28,7 @@
   omit-xml-declaration="yes"/>
 
   <!-- DEFINE INCLUDES -->
+  <xsl:include href="../../functions.xsl" />
   <xsl:include href="../../globals.xsl" />
   <xsl:include href="../strings.xsl" />
   <xsl:include href="../localeSettings.xsl" />

@@ -23,22 +23,7 @@
     <div id="subzone">
       <strong><xsl:value-of select="name"/></strong>
       <table class="zoneTable">
-        <tr>
-          <th>
-            <xsl:copy-of select="$hmon-OnOffState"/>
-          </th>
-          <td>
-            <xsl:value-of select="switchValue"/>
-          </td>
-        </tr>
-        <tr>
-          <th>
-            <xsl:copy-of select="$hmon-RunningTime"/>
-          </th>
-          <td>
-            <xsl:value-of select="runningTime"/>
-          </td>
-        </tr>
+        <xsl:call-template name="outInputRows"/>
         <xsl:for-each select="temps/temp">
           <tr>
             <th>
